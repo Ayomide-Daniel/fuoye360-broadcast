@@ -11,7 +11,11 @@
                 "id": 12,
                 "name": "Brown"
             },
-            "relative_at": "08 Jan, '21"
+            "relative_at": "08 Jan, '21",
+            "media": [
+                "pic_1.png",
+                "pic_3.png"
+            ]
         },
         {
             "id": 2,
@@ -38,7 +42,11 @@
                 "name": "Brown"
             },
             "is_thread": true,
-            "relative_at": "08 Jan, '21"
+            "relative_at": "08 Jan, '21",
+            "media": [
+                "pic_1.png",
+                "pic_2.png"
+            ]
         }
     ]
 }

@@ -13,7 +13,9 @@
         <div class="trending-container green-bg">
           <v-container class="container">
             <div class="meta-div">
-              <h3><i class="bi bi-hash icon"></i>Treding On Campus</h3>
+              <h3>
+                <i class="bi bi-hash icon" style="font-size: 1.3rem"></i>Treding On Campus
+              </h3>
             </div>
             <div class="content-div">
               <div class="topic">
@@ -31,10 +33,12 @@
             </div>
           </v-container>
         </div>
-        <div class="trending-container green-bg">
+        <div class="suggestion-container" style="background: var(--input-color)">
           <v-container class="container">
             <div class="meta-div">
-              <h3>Who to follow</h3>
+              <h3>
+                <i class="bi bi-at icon" style="font-size: 1.5rem"></i> Who to follow
+              </h3>
             </div>
             <div class="content-div">
               <div class="topic">
@@ -67,7 +71,11 @@ export default {
   display: flex;
   z-index: 1;
   padding: 0.5rem 2rem;
+  /* position: sticky;
+  top: 0;
+  overflow-y: scroll; */
 }
+
 .search-container {
   width: 100%;
   display: grid;
@@ -94,10 +102,18 @@ export default {
   display: grid;
   align-items: center;
 }
-.trending-container {
+.trending-container,
+.suggestion-container {
   min-height: 200px;
   width: 100%;
   border-radius: 1.5rem;
+}
+
+.suggestion-container {
+  background: url("../assets/images/45degreee_fabric.png");
+  background-repeat: repeat;
+  background-size: 25%;
+  background-position: center;
 }
 .meta-div {
   margin: 0.5rem 1rem;

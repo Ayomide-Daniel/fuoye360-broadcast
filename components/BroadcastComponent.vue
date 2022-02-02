@@ -96,10 +96,10 @@
               v-for="img in d_broadcast.media"
               :key="img.id"
               loading="lazy"
-              :src="$asset('storage/broadcast_images/' + img)"
+              :src="require('../assets/images/' + img)"
               alt=""
               load="lazy"
-              @click="viewImage($asset('storage/broadcast_images/' + img))"
+              @click="viewImage(require('../assets/images/' + img))"
             />
           </div>
           <BroadcastButtonComponent :broadcast="d_broadcast" />
@@ -346,5 +346,40 @@ export default {
   padding: 0.25rem 0.5rem;
   border-radius: 1rem;
   font-size: 0.75rem;
+}
+.broadcast-media {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 1rem 0.5rem;
+  justify-content: space-around;
+  column-gap: 0.5rem;
+  width: 100%;
+}
+.broadcast-media img {
+  width: inherit;
+  height: auto;
+  min-height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.broadcast-media img::after {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  width: inherit;
+  height: 100%;
+}
+.broadcast-media img:hover::before {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+}
+.broadcast-media img:hover {
+  scale: 0.9;
 }
 </style>
