@@ -1,4 +1,4 @@
-import User from '../User.json'
+import User from '../user.json'
 
 const state = () => ({
   data: User.data,

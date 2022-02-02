@@ -76,10 +76,8 @@
         </div>
         <div class="tweet-profile-div">
           <div class="profile-meta">
-            <nuxt-link to="" style="text-decoration: none">
-              <span class="tweet-profilename" style="color: var(--primary-color)">{{
-                d_broadcast.user.name
-              }}</span
+            <nuxt-link to="" style="text-decoration: none; color: var(--primary-color)">
+              <span class="tweet-profilename">{{ d_broadcast.user.name }}</span
               ><span class="tweet-time" style="font-weight: 600">@brown</span>
             </nuxt-link>
             <span class="tweet-time"> . {{ d_broadcast.relative_at }} </span>
