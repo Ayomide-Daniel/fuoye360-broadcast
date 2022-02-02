@@ -33,46 +33,48 @@
           /></nuxt-link>
           <!-- :src="$asset('storage/profile_images/' + d_broadcast.user.image)" -->
         </div>
-        <div class="tweet-txt-div">
+        <div class="tweet-content">
           <div
-            v-if="d_broadcast.rebroadcasts != 0 && !d_broadcast.thread"
-            class="retweeted-by"
-            style="font-size: 0.75rem"
+            v-if="d_broadcast.meta._info.count > 0 && !d_broadcast.meta.is_thread"
+            class="info-display"
           >
-            <div v-if="d_broadcast.retweeter_id === user.id">
-              <i class="bi bi-megaphone"></i> You retweeted
+            <div v-if="d_broadcast.meta._info.type === 'retweets'" class="tweet-retweet">
+              <div v-if="d_broadcast.meta._info.user.id === user.id">
+                <b> <i class="bi bi-megaphone-fill icon"></i> You rebroadcasted this </b>
+              </div>
+              <div v-else-if="d_broadcast.meta._info.count === 1">
+                <i class="bi bi-megaphone-fill icon"></i>
+                <b> {{ d_broadcast.meta._info.user.name }} rebroadcasted this </b>
+              </div>
+              <div v-else-if="d_broadcast.meta._info.count === 2">
+                <i class="bi bi-megaphone-fill icon"></i>
+                <b>
+                  {{ d_broadcast.meta._info.user.name }} and 1 other rebrodcasted this</b
+                >
+              </div>
+              <div v-else-if="d_broadcast.meta._info.count > 2">
+                <i class="bi bi-megaphone-fill icon"></i>
+                <b>
+                  {{ d_broadcast.meta._info.user.name }} and
+                  {{ d_broadcast.meta._info.count }} others rebroadcasted this
+                </b>
+              </div>
             </div>
-            <div v-else-if="d_broadcast.info_display === 'retweets'">
-              <div v-if="d_broadcast.retweets_count === 1">
-                <i class="bi bi-megaphone"></i>
-                {{ d_broadcast.retweeter.name }}
+            <div v-else-if="d_broadcast.meta._info.type === 'likes'" class="tweet-liked">
+              <div v-if="d_broadcast.meta._info.count === 1">
+                <i class="bi bi-heart-fill icon"></i>
+                <b> {{ d_broadcast.meta._info.user.name }} liked this </b>
               </div>
-              <div v-else-if="d_broadcast.retweets_count === 2">
-                <i class="bi bi-megaphone"></i>
-                {{ d_broadcast.retweeter.name }} and 1 other
+              <div v-else-if="d_broadcast.meta._info.count === 2">
+                <i class="bi bi-heart-fill icon"></i>
+                <b> {{ d_broadcast.meta._info.user.name }} and 1 other liked this </b>
               </div>
-              <div v-else-if="d_broadcast.retweets_count > 2">
-                <i class="bi bi-megaphone"></i>
-                {{ d_broadcast.retweeter.name }} and
-                {{ d_broadcast.retweets_count }} others
-              </div>
-            </div>
-            <div
-              v-else-if="d_broadcast.info_display === 'likes'"
-              class="tweet-liked"
-              style="font-size: 0.75rem"
-            >
-              <div v-if="d_broadcast.likes_count === 1">
-                <i class="bi bi-heart"></i>
-                {{ d_broadcast.retweeter.name }}
-              </div>
-              <div v-else-if="d_broadcast.likes_count === 2">
-                <i class="bi bi-heart"></i>
-                {{ d_broadcast.retweeter.name }} and 1 other
-              </div>
-              <div v-else-if="d_broadcast.likes_count > 2">
-                <i class="bi bi-heart"></i>
-                {{ d_broadcast.retweeter.name }} and {{ d_broadcast.likes_count }} others
+              <div v-else-if="d_broadcast.meta._info.count > 2">
+                <i class="bi bi-heart-fill icon"></i>
+                <b>
+                  {{ d_broadcast.meta._info.user.name }} and
+                  {{ d_broadcast.meta._info.count }} others liked this
+                </b>
               </div>
             </div>
           </div>
@@ -92,18 +94,18 @@
             {{ d_broadcast.body }}
           </div>
           <div v-if="d_broadcast.media != null" class="broadcast-media">
-            <img
-              v-for="img in d_broadcast.media"
-              :key="img.id"
-              loading="lazy"
-              :src="require('../assets/images/' + img)"
-              alt=""
-              load="lazy"
-              @click="viewImage(require('../assets/images/' + img))"
-            />
+            <div v-for="img in d_broadcast.media" :key="img.id" class="img-div">
+              <img
+                loading="lazy"
+                :src="require('../assets/images/' + img)"
+                alt=""
+                load="lazy"
+                @click="viewImage(require('../assets/images/' + img))"
+              />
+            </div>
           </div>
           <BroadcastButtonComponent :broadcast="d_broadcast" />
-          <div v-if="d_broadcast.is_thread" class="thread-icon-div">
+          <div v-if="d_broadcast.meta.is_thread" class="thread-icon-div">
             <span class="thread-icon"> <i class="bi bi-newspaper icon"></i> Thread </span>
           </div>
         </div>
@@ -134,12 +136,12 @@ export default {
   mounted() {
     this.$root.$on("addedFromBookmark", (id) => {
       if (id === this.d_broadcast.id) {
-        this.d_broadcast.bookmarked = true;
+        this.d_broadcast.meta.is_bookmarked = true;
       }
     });
     this.$root.$on("removedFromBookmark", (id) => {
       if (id === this.d_broadcast.id) {
-        this.d_broadcast.bookmarked = false;
+        this.d_broadcast.meta.is_bookmarked = false;
       }
     });
 
@@ -151,19 +153,19 @@ export default {
       if (this.origin) {
         if (this.d_broadcast.type === "comment") {
           if (this.d_broadcast.id === tweet.post_id) {
-            return (this.d_broadcast.comments += 1);
+            return (this.d_broadcast.meta.comments.count += 1);
           }
         }
       }
       if (this.d_broadcast.id === tweet.post_id) {
-        this.d_broadcast.comments += 1;
+        this.d_broadcast.meta.comments.count += 1;
         if (this.createdThreadStatus) {
           this.d_broadcast.is_thread = true;
         }
       }
       if (this.d_broadcast.type === "comment") {
         if (this.d_broadcast.id === this.tweet.post_id) {
-          this.d_broadcast.comments += 1;
+          this.d_broadcast.meta.comments.count += 1;
         }
       }
     });
@@ -180,7 +182,7 @@ export default {
         $(e.target).closest(".tweeter-img").length === 0 &&
         $(e.target).closest(".tweet-func-div").length === 0 &&
         $(e.target).closest(".tweet-profile-div").length === 0 &&
-        $(e.target).closest(".retweeted-by").length === 0 &&
+        $(e.target).closest(".info-display").length === 0 &&
         $(e.target).closest(".broadcast-media img").length === 0 &&
         $(e.target).closest(".tweet-content-div a").length === 0
       ) {
@@ -281,7 +283,7 @@ export default {
   font-weight: 700;
 }
 
-.tweet-txt-div {
+.tweet-content {
   margin-left: 0.5rem;
   width: 100%;
 }
@@ -312,13 +314,11 @@ export default {
   color: var(--red-color);
 }
 
-.retweeted-by,
 .tweet-retweet i {
   color: var(--brand-color);
-  text-decoration: none;
-  word-break: break-all;
 }
-.retweeted-by {
+
+.info-display {
   font-size: 0.75rem;
 }
 
@@ -350,22 +350,29 @@ export default {
 .broadcast-media {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  padding: 1rem 0.5rem;
   justify-content: space-around;
   column-gap: 0.5rem;
   width: 100%;
-}
-.broadcast-media img {
-  width: inherit;
-  height: auto;
-  min-height: 200px;
-  object-fit: cover;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  position: relative;
+  padding: 1rem 0;
 }
 
-.broadcast-media img::after {
+.broadcast-media .img-div {
+  width: 100%;
+  min-height: 200px;
+  border-radius: 0.5rem;
+  position: relative;
+  cursor: pointer;
+  transition: all ease-in-out 300ms;
+}
+
+.broadcast-media img {
+  width: inherit;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.broadcast-media .img-div::before {
   display: block;
   content: "";
   position: absolute;
@@ -375,11 +382,12 @@ export default {
   z-index: 1;
   width: inherit;
   height: 100%;
+  border-radius: inherit;
 }
-.broadcast-media img:hover::before {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+.broadcast-media .img-div:hover::before {
+  background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.5));
 }
-.broadcast-media img:hover {
-  scale: 0.9;
+.broadcast-media .img-div:hover {
+  transform: scale(0.9);
 }
 </style>
