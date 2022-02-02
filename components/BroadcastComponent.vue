@@ -1,111 +1,114 @@
 <template>
   <div class="tweet-div" :style="origin ? 'border:none;padding:0' : ''">
-    <div
-      class="tweet-content-div"
-      :class="origin ? 'for-thread' : ''"
-      :style="origin ? 'transform: scale(.85)' : ''"
-      @click="viewStatus(d_broadcast.id, d_broadcast.type, $event)"
-    >
-      <div v-if="origin" class="thread-border">
-        <span class="border-content"></span>
-      </div>
+    <v-container>
+      <div
+        class="tweet-content-div"
+        :class="origin ? 'for-thread' : ''"
+        :style="origin ? 'transform: scale(.85)' : ''"
+        @click="viewStatus(d_broadcast.id, d_broadcast.type, $event)"
+      >
+        <div v-if="origin" class="thread-border">
+          <span class="border-content"></span>
+        </div>
 
-      <input
-        v-if="d_broadcast.user_id != user.id"
-        hidden
-        class=""
-        style="display: none"
-        value=""
-      />
-      <div class="tweet-img-div">
-        <nuxt-link
-          :to="{
-            name: 'username',
-            params: { username: d_broadcast.user.name },
-            query: { v: 'broadcast' },
-          }"
-          ><img
-            loading="lazy"
-            :alt="d_broadcast.user.name"
-            class="tweeter-img"
-            :src="require('@/assets/images/profile.png')"
-        /></nuxt-link>
-        <!-- :src="$asset('storage/profile_images/' + d_broadcast.user.image)" -->
-      </div>
-      <div class="tweet-txt-div">
-        <div
-          v-if="d_broadcast.rebroadcasts != 0 && !d_broadcast.thread"
-          class="retweeted-by"
-          style="font-size: 0.75rem"
-        >
-          <div v-if="d_broadcast.retweeter_id === user.id">
-            <i class="bi bi-megaphone"></i> You retweeted
-          </div>
-          <div v-else-if="d_broadcast.info_display === 'retweets'">
-            <div v-if="d_broadcast.retweets_count === 1">
-              <i class="bi bi-megaphone"></i>
-              {{ d_broadcast.retweeter.name }}
-            </div>
-            <div v-else-if="d_broadcast.retweets_count === 2">
-              <i class="bi bi-megaphone"></i>
-              {{ d_broadcast.retweeter.name }} and 1 other
-            </div>
-            <div v-else-if="d_broadcast.retweets_count > 2">
-              <i class="bi bi-megaphone"></i>
-              {{ d_broadcast.retweeter.name }} and {{ d_broadcast.retweets_count }} others
-            </div>
-          </div>
+        <input
+          v-if="d_broadcast.user_id != user.id"
+          hidden
+          class=""
+          style="display: none"
+          value=""
+        />
+        <div class="tweet-img-div">
+          <nuxt-link
+            :to="{
+              name: 'username',
+              params: { username: d_broadcast.user.name },
+              query: { v: 'broadcast' },
+            }"
+            ><img
+              loading="lazy"
+              :alt="d_broadcast.user.name"
+              class="tweeter-img"
+              :src="require('@/assets/images/brown.jpg')"
+          /></nuxt-link>
+          <!-- :src="$asset('storage/profile_images/' + d_broadcast.user.image)" -->
+        </div>
+        <div class="tweet-txt-div">
           <div
-            v-else-if="d_broadcast.info_display === 'likes'"
-            class="tweet-liked"
+            v-if="d_broadcast.rebroadcasts != 0 && !d_broadcast.thread"
+            class="retweeted-by"
             style="font-size: 0.75rem"
           >
-            <div v-if="d_broadcast.likes_count === 1">
-              <i class="bi bi-heart"></i>
-              {{ d_broadcast.retweeter.name }}
+            <div v-if="d_broadcast.retweeter_id === user.id">
+              <i class="bi bi-megaphone"></i> You retweeted
             </div>
-            <div v-else-if="d_broadcast.likes_count === 2">
-              <i class="bi bi-heart"></i>
-              {{ d_broadcast.retweeter.name }} and 1 other
+            <div v-else-if="d_broadcast.info_display === 'retweets'">
+              <div v-if="d_broadcast.retweets_count === 1">
+                <i class="bi bi-megaphone"></i>
+                {{ d_broadcast.retweeter.name }}
+              </div>
+              <div v-else-if="d_broadcast.retweets_count === 2">
+                <i class="bi bi-megaphone"></i>
+                {{ d_broadcast.retweeter.name }} and 1 other
+              </div>
+              <div v-else-if="d_broadcast.retweets_count > 2">
+                <i class="bi bi-megaphone"></i>
+                {{ d_broadcast.retweeter.name }} and
+                {{ d_broadcast.retweets_count }} others
+              </div>
             </div>
-            <div v-else-if="d_broadcast.likes_count > 2">
-              <i class="bi bi-heart"></i>
-              {{ d_broadcast.retweeter.name }} and {{ d_broadcast.likes_count }} others
+            <div
+              v-else-if="d_broadcast.info_display === 'likes'"
+              class="tweet-liked"
+              style="font-size: 0.75rem"
+            >
+              <div v-if="d_broadcast.likes_count === 1">
+                <i class="bi bi-heart"></i>
+                {{ d_broadcast.retweeter.name }}
+              </div>
+              <div v-else-if="d_broadcast.likes_count === 2">
+                <i class="bi bi-heart"></i>
+                {{ d_broadcast.retweeter.name }} and 1 other
+              </div>
+              <div v-else-if="d_broadcast.likes_count > 2">
+                <i class="bi bi-heart"></i>
+                {{ d_broadcast.retweeter.name }} and {{ d_broadcast.likes_count }} others
+              </div>
             </div>
           </div>
-        </div>
-        <div class="tweet-profile-div">
-          <div class="profile-meta">
-            <nuxt-link to="" style="text-decoration: none; color: var(--primary-color)">
-              <span class="tweet-profilename">{{ d_broadcast.user.name }}</span
-              ><span class="tweet-time" style="font-weight: 600">@brown</span>
-            </nuxt-link>
-            <span class="tweet-time"> . {{ d_broadcast.relative_at }} </span>
+          <div class="tweet-profile-div">
+            <div class="profile-meta">
+              <nuxt-link to="" style="text-decoration: none; color: var(--primary-color)">
+                <span class="tweet-profilename">{{ d_broadcast.user.name }}</span
+                ><span class="tweet-time" style="font-weight: 600">@brown</span>
+              </nuxt-link>
+              <span class="tweet-time"> . {{ d_broadcast.relative_at }} </span>
+            </div>
+            <button class="tweet-options" @click="showModal(broadcast, null, 'option')">
+              <i class="bi bi-chevron-down"></i>
+            </button>
           </div>
-          <button class="tweet-options" @click="showModal(broadcast, null, 'option')">
-            <i class="bi bi-chevron-down"></i>
-          </button>
-        </div>
-        <div class="tweet-body">
-          {{ d_broadcast.body }}
-        </div>
-        <div v-if="d_broadcast.media != null" class="broadcast-media">
-          <img
-            v-for="img in d_broadcast.media"
-            :key="img.id"
-            loading="lazy"
-            :src="$asset('storage/broadcast_images/' + img)"
-            alt=""
-            load="lazy"
-            @click="viewImage($asset('storage/broadcast_images/' + img))"
-          />
-        </div>
-        <BroadcastButtonComponent :broadcast="d_broadcast" />
-        <div v-if="d_broadcast.is_thread" class="thread-icon-div">
-          <span class="thread-icon"> <i class="bi bi-newspaper icon"></i> Thread </span>
+          <div class="tweet-body">
+            {{ d_broadcast.body }}
+          </div>
+          <div v-if="d_broadcast.media != null" class="broadcast-media">
+            <img
+              v-for="img in d_broadcast.media"
+              :key="img.id"
+              loading="lazy"
+              :src="$asset('storage/broadcast_images/' + img)"
+              alt=""
+              load="lazy"
+              @click="viewImage($asset('storage/broadcast_images/' + img))"
+            />
+          </div>
+          <BroadcastButtonComponent :broadcast="d_broadcast" />
+          <div v-if="d_broadcast.is_thread" class="thread-icon-div">
+            <span class="thread-icon"> <i class="bi bi-newspaper icon"></i> Thread </span>
+          </div>
         </div>
       </div>
-    </div>
+    </v-container>
   </div>
 </template>
 
@@ -228,7 +231,6 @@ export default {
 }
 
 .tweet-div {
-  padding: 0.5rem;
   border-bottom: 1px solid #eee;
 }
 
@@ -243,6 +245,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0.5rem 0;
 }
 
 .tweet-profile-div span {
@@ -253,7 +256,6 @@ export default {
 .tweet-options {
   background: none;
   border: none;
-  padding: 0.5rem;
 }
 
 .tweet-time {
@@ -297,7 +299,7 @@ export default {
 .tweet-func-div button {
   font-size: inherit;
   background: none;
-  color: #ccc;
+  color: var(--grey-color);
   padding: 0.25rem;
   border: none;
   border-radius: 0.5rem;
@@ -342,7 +344,6 @@ export default {
 .thread-icon {
   background: var(--input-color);
   padding: 0.25rem 0.5rem;
-  /* color: var(--white-color); */
   border-radius: 1rem;
   font-size: 0.75rem;
 }

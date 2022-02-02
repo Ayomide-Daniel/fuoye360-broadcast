@@ -23,6 +23,9 @@
         <nuxt-link to="/more" class="navlinks">
           <i class="bi bi-three-dots icon"></i> More
         </nuxt-link>
+        <button to="/more" class="navbtn fill-btn">
+          <i class="bi bi-megaphone icon"></i> New Broadcast
+        </button>
       </nav>
     </v-container>
   </div>
@@ -56,7 +59,8 @@ export default {
   padding-left: 2rem;
 }
 
-.navlinks {
+.navlinks,
+.navbtn {
   padding: 1rem;
   border-radius: 2rem;
   margin: 0.15rem 0;
@@ -64,11 +68,17 @@ export default {
   font-weight: 600;
   color: var(--primary-color);
 }
-.navlinks .icon {
+.navlinks .icon,
+.navbtn .icon {
   font-size: 1.3rem;
 }
 .navlinks:hover {
   background: var(--green-bg);
   font-weight: 800;
+}
+.fill-btn {
+  background: var(--brand-color);
+  color: var(--white-color);
+  box-shadow: 0 0 14px 0 var(--green-bg);
 }
 </style>
