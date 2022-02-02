@@ -1,0 +1,44 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "user_id": 12,
+            "body": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut dolor alias hic minus. Praesentium pariatur provident a velit voluptatum explicabo, quidem dignissimos porro ex quibusdam suscipit inventore doloribus voluptate modi?",
+            "created_at": "2021-01-16 01:35:57",
+            "post_id": null,
+            "is_comment": false,
+            "user": {
+                "id": 12,
+                "name": "Brown"
+            },
+            "relative_at": "08 Jan, '21"
+        },
+        {
+            "id": 2,
+            "user_id": 12,
+            "body": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut dolor alias hic minus. Praesentium pariatur provident a velit voluptatum explicabo, quidem dignissimos porro ex quibusdam suscipit inventore doloribus voluptate modi?",
+            "created_at": "2021-01-16 01:35:57",
+            "post_id": null,
+            "is_comment": false,
+            "user": {
+                "id": 12,
+                "name": "Brown"
+            },
+            "relative_at": "08 Jan, '21"
+        },
+        {
+            "id": 3,
+            "user_id": 12,
+            "body": "asmdklasmdklm Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut dolor alias hic minus. Praesentium pariatur provident a velit voluptatum explicabo, quidem dignissimos porro ex quibusdam suscipit inventore doloribus voluptate modi?",
+            "created_at": "2021-01-16 01:35:57",
+            "post_id": null,
+            "is_comment": false,
+            "user": {
+                "id": 12,
+                "name": "Brown"
+            },
+            "is_thread": true,
+            "relative_at": "08 Jan, '21"
+        }
+    ]
+}

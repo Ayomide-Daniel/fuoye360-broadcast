@@ -1,0 +1,128 @@
+:root {
+    --brand-color: limegreen;
+    --dark-bg: rgba(0, 0, 0, 0.25);
+    --white-color: #fff;
+    --brand-color-bg: rgba(50, 205, 50, 0.25);
+    --green: limegreen;
+    --green-bg: rgba(50, 205, 50, 0.25);
+    --green-dark-bg: rgba(50, 205, 50, 0.075);
+    --orange: #ff9a14;
+    --orange-bg: rgba(255, 154, 20, 0.25);
+    --blue: #a2dce7;
+    --blue-bg: rgba(162, 220, 231, 0.25);
+    --pink: #f8ccdc;
+    --pink-bg: rgba(248, 204, 220, 0.25);
+    --yellow: #ffed86;
+    --yellow-bg: rgba(255, 237, 134, 0.25);
+    --input-color: #eaedf3;
+    --border-color: #d3d3d3;
+    --red-color: #ff2323;
+    --grey-color: #8899a6;
+}
+
+.blue-bg {
+    background: var(--blue-bg);
+}
+
+.blue-div {
+    background: var(--blue);
+}
+
+.orange-bg {
+    background: var(--orange-bg);
+}
+
+.orange-div {
+    background: var(--orange);
+}
+
+.green-bg {
+    background: var(--green-bg);
+}
+
+.green-div {
+    background: var(--green);
+    color: var(--white);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#broadcast-component .skeleton-loader, #notifications-component .skeleton-loader {
+    display: flex;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+#broadcast-component .v-skeleton-loader__heading {
+    border-radius: 1rem;
+    height: 6px;
+    flex: 10;
+    width: 100%;
+    margin-top: 1rem;
+    margin-left: .5rem;
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
+    -ms-border-radius: 1rem;
+    -o-border-radius: 1rem;
+}
+
+#broadcast-component .heading-loading {
+    width: 80%;
+}
+
+.v-application {
+    font-family: 'Montserrat' !important;
+    font-weight: 300;
+}
+
+.icon {
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+.form-container {
+    width: 100%;
+}
+
+.input-div {
+    display: flex;
+    align-items: center;
+}
+
+input {
+    background: var(--input-color) !important;
+    padding: .7rem 1rem;
+    width: 100%;
+    display: inline-block;
+    outline: none;
+    border: none;
+    /* border-radius: 1rem !important;
+    -webkit-border-radius: 1rem !important;
+    -moz-border-radius: 1rem !important;
+    -ms-border-radius: 1rem !important;
+    -o-border-radius: 1rem !important; */
+}
+
+.page-meta-div {
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    z-index: 2;
+}
+.navlinks.nuxt-link-exact-active.nuxt-link-active {
+    background: var(--green-bg);
+    font-weight: 800;
+}
+@media screen and (min-width: 1024px) {
+    .main-wrapper {
+        display: grid;
+        grid-template-columns: 23% 45% 32%;
+        min-height: 100vh;
+    }
+}

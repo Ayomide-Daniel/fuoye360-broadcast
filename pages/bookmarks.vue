@@ -1,15 +1,14 @@
 <template>
   <div>
     <div class="page-meta-div">
-      <h3><i class="bi bi-house icon"></i> Home</h3>
+      <h3><i class="bi bi-bookmark icon"></i> Bookmarks</h3>
     </div>
-    <BroadcastGridComponent />
   </div>
 </template>
 
 <script>
 export default {
-  name: "IndexPage",
+  name: "BookmarksPage",
 };
 </script>
 
