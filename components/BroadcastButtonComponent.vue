@@ -1,32 +1,34 @@
 <template>
   <div class="broadcast-func-div">
-    <button @click="showModal('comment')">
+    <button v-ripple @click="showModal('comment')">
       <i class="bi bi-chat icon"></i>
       <span class="comment-count">{{ btn_broadcast.meta.comments.count }}</span>
     </button>
     <button
       v-if="btn_broadcast.meta.retweets.has_retweeted"
+      v-ripple
       class="tweet-retweet"
       @click="undoRebroadcast()"
     >
       <i class="bi bi-megaphone-fill icon"></i>
       {{ btn_broadcast.meta.retweets.count }}
     </button>
-    <button v-else @click="rebroadcast()">
+    <button v-else v-ripple @click="rebroadcast()">
       <i class="bi bi-megaphone icon"></i>
       {{ btn_broadcast.meta.retweets.count }}
     </button>
     <button
       v-if="btn_broadcast.meta.likes.has_liked"
+      v-ripple
       class="tweet-liked"
       @click="unlikeBroadcast()"
     >
       <i class="bi bi-heart-fill icon"></i> {{ btn_broadcast.meta.likes.count }}
     </button>
-    <button v-else @click="likeBroadcast()">
+    <button v-else v-ripple @click="likeBroadcast()">
       <i class="bi bi-heart icon"></i> {{ btn_broadcast.meta.likes.count }}
     </button>
-    <button @click="showModal('share')">
+    <button v-ripple @click="showModal('share')">
       <i class="bi bi-share"></i>
     </button>
   </div>
@@ -94,13 +96,21 @@ export default {
 .broadcast-func-div {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  padding: 0.25rem 0;
   margin-left: 58px;
   justify-content: center;
+  margin-top: -0.5rem;
+  margin-bottom: -1rem;
 }
 
 button {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: all ease-in-out 300ms;
+  outline: none;
 }
 .tweet-liked {
   color: var(--red-color);

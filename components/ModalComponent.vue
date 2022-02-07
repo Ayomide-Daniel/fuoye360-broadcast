@@ -69,6 +69,43 @@
           </div>
         </div>
       </div>
+
+      <div
+        v-if="showImage"
+        id="view-image"
+        class="vs-wrapper"
+        @click="closeImage($event)"
+      >
+        <div class="swiper-container">
+          <VueSlickCarousel
+            ref="carousel"
+            class="swiper-wrapper"
+            :arrows="true"
+            :dots="true"
+            :autoplay="false"
+            :infinite="false"
+          >
+            <div v-for="(img, index) in imageSrc" :key="index">
+              <img
+                loading="lazy"
+                :src="require('../assets/images/' + img)"
+                alt=""
+                class=""
+              />
+            </div>
+          </VueSlickCarousel>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination swiper-pagination-white"></div>
+          <!-- Add Arrows -->
+          <div class="swiper-div">
+            <div class="swiper-button-next swiper-button-white"></div>
+            <div class="swiper-button-prev swiper-button-white"></div>
+          </div>
+        </div>
+      </div>
+    </v-scale-transition>
+
+    <v-scroll-y-reverse-transition>
       <div
         v-if="showComment"
         id="#comment-box"
@@ -108,9 +145,10 @@
               </div>
             </form>
             <div class="comment-btn-div">
-              <button type="button" @click="showComment = false">Close</button>
+              <button v-ripple type="button" @click="showComment = false">Close</button>
               <button
                 id="post-comment"
+                v-ripple
                 type="submit"
                 style="background: limegreen; color: #fff"
                 :disabled="!comment.submit"
@@ -133,26 +171,78 @@
       </div>
 
       <div
-        v-if="showImage"
-        id="view-image"
-        class="vs-wrapper"
-        @click="closeImage($event)"
+        v-if="showShare"
+        class="vs-wrapper broadcast-modal"
+        data-name="Share"
+        @click="closeBroadcastModal($event, 'share')"
       >
-        <div class="vs-container container-center">
-          <div class="vs-content">
-            <img loading="lazy" :src="imageSrc" alt="" class="" />
+        <div
+          class="vs-container"
+          style="
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+          "
+        >
+          <div
+            class="vs-content"
+            style="border-radius: 1rem 1rem 0 0; position: relative"
+          >
+            <a href="#l-div" class="share-scroll-down"></a>
+            <h4>What would you like to do?</h4>
+            <form action="" method="post" style="border-radius: 1rem 1rem 0 0">
+              <div class="input-div">
+                <button
+                  v-if="!tweet.bookmarked"
+                  type="button"
+                  class="add-to-bookmark"
+                  @click="addToBookmarks(tweet.id)"
+                >
+                  <i class="bi bi-bookmark icon"></i> Add to Bookmark
+                </button>
+                <button
+                  v-else
+                  type="button"
+                  class="remove-from-bookmark"
+                  @click="removeFromBookmarks(tweet.id)"
+                >
+                  <i class="bi bi-bookamark-x icon"></i> Remove from Bookmark
+                </button>
+              </div>
+              <div class="input-div">
+                <button type="button" class="share-broadcast">
+                  <i class="bi bi-share icon"></i> Share Broadcast
+                </button>
+              </div>
+              <div class="input-div">
+                <button type="button" class="share-copy-link">
+                  <i class="bi bi-link-45deg icon"></i> Copy link
+                </button>
+              </div>
+              <div id="l-div"></div>
+            </form>
           </div>
         </div>
       </div>
-    </v-scale-transition>
+    </v-scroll-y-reverse-transition>
   </div>
 </template>
 
 <script>
 import $ from "jquery";
+import VueSlickCarousel from "vue-slick-carousel";
 import Broadcast from "~/assets/js/api/Broadcast";
+import "vue-slick-carousel/dist/vue-slick-carousel.css";
+// optional style forarrows & dots
+import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 export default {
   name: "ModalComponent",
+  components: {
+    VueSlickCarousel,
+  },
   data() {
     return {
       showCreateBroadcast: false,
@@ -164,8 +254,8 @@ export default {
         submit: false,
         body: "",
         blogger_id: "",
-        post_id: "",
-        comment_id: "",
+        post_id: null,
+        comment_id: null,
       },
       imageSrc: null,
       form: {
@@ -187,9 +277,8 @@ export default {
     },
   },
   mounted() {
-    this.$root.$on("viewImage", (src) => {
-      this.imageSrc = src;
-      this.showImage = true;
+    this.$root.$on("viewImage", (src, index) => {
+      this.setImageCarousel(src, index);
     });
 
     this.$root.$on("showModal", ({ tweet, type, modal }) => {
@@ -209,8 +298,13 @@ export default {
     });
   },
   methods: {
+    setImageCarousel(src, index) {
+      this.imageSrc = src;
+      //   this.$refs.carousel.goTo(index);
+      this.showImage = true;
+    },
     closeImage(e) {
-      if ($(e.target).closest("img").length === 0) {
+      if ($(e.target).closest(".swiper-container").length === 0) {
         this.showImage = false;
       }
     },
@@ -290,6 +384,13 @@ export default {
   z-index: 3;
   overflow-y: scroll;
 }
+#view-image {
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .vs-container {
   padding-bottom: 3rem;
@@ -322,6 +423,22 @@ export default {
   border-radius: 1rem;
 }
 
+.image-content {
+  background: none;
+  max-width: none;
+  border: none;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.image-content img {
+  /* width: 0%; */
+  width: 100%;
+  max-width: 768px;
+  height: auto;
+  border-radius: 0;
+}
 #tweet-box .tweet-btn-div {
   display: flex;
   justify-content: flex-end;
@@ -384,31 +501,13 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
-#comment-box textarea {
-  max-width: inherit;
-  outline: none;
-  border: none;
-  resize: none;
-  background: none;
-  width: 100%;
-  font: inherit;
-}
-#comment-box button {
-  border: 2px solid rgb(147, 197, 147);
-  padding: 0.5rem;
-  border-radius: 1rem;
-  background: none;
-  color: limegreen;
-  font-weight: bold;
-  text-transform: uppercase;
-}
 .broadcat-body-component {
   transform: scale(0.95);
   padding: 1rem;
   border-radius: 1rem;
   border: 1px solid var(--border-color);
 }
-.blog-modal .share-scroll-down {
+.broadcast-modal .share-scroll-down {
   content: "";
   position: absolute;
   margin: auto;
@@ -418,24 +517,34 @@ export default {
   display: block;
   width: 15%;
   height: 8px;
-  background: var(--bg-color);
+  background: var(--input-color);
+  /* background: url("../assets/images/45degreee_fabric.png");
+  background-repeat: repeat;
+  background-size: 25%;
+  background-position: center; */
   border-radius: 0.5rem;
   -webkit-border-radius: 0.5rem;
   -moz-border-radius: 0.5rem;
   -ms-border-radius: 0.5rem;
   -o-border-radius: 0.5rem;
 }
-.blog-modal h3 {
+.broadcast-modal h4 {
   margin: 1rem 0;
   text-align: center;
 }
-.blog-modal form {
+.broadcast-modal form {
+  /* background: url("../assets/images/45degreee_fabric.png");
+  background-repeat: repeat;
+  background-size: 25%;
+  background-position: center; */
+  background: var(--input-color);
   padding: 1rem;
+  font-size: 0.9rem;
 }
-.blog-modal .input-div {
+.broadcast-modal .input-div {
   width: 100%;
 }
-.blog-modal button {
+.broadcast-modal button {
   padding: 0.8rem 0.5rem;
   font: inherit;
   width: inherit;
@@ -453,10 +562,13 @@ export default {
 }
 
 .tweet-txt-div textarea {
-  width: 100%;
   outline: none;
+  border: none;
   resize: none;
+  background: none;
+  width: 100%;
 }
+
 .comment-btn-div {
   display: flex;
   column-gap: 0.5rem;
@@ -464,11 +576,22 @@ export default {
   padding: 0.5rem;
 }
 .comment-btn-div button {
-  min-width: 180px;
-  padding: 0.5rem;
+  max-width: 180px;
+  padding: 0.5rem 2rem;
   border-radius: 0.5rem;
   border: 1px solid var(--brand-color);
   color: var(--brand-color);
   text-transform: uppercase;
+}
+
+.swiper-container {
+  width: 100%;
+  margin: 2% 0;
+}
+.swiper-container img {
+  width: 95%;
+  max-width: 768px;
+  height: auto;
+  margin: 0 auto;
 }
 </style>

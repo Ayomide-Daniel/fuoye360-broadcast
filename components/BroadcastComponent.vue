@@ -77,16 +77,15 @@ export default {
     });
   },
   methods: {
-    viewImage(src) {
-      this.$root.$emit("viewImage", src);
-    },
     showModal(data, type, modal) {
       this.$root.$emit("showModal", { tweet: data, type, modal });
     },
     viewStatus(id, type, e) {
       if (
         $(e.target).closest(".tweet-btn-component").length === 0 &&
-        $(e.target).closest(".tweet-content-div a").length === 0
+        $(e.target).closest(".tweet-content-div a").length === 0 &&
+        $(e.target).closest(".tweet-content-div .broadcast-media").length === 0 &&
+        $(e.target).closest(".tweet-content-div button").length === 0
       ) {
         if (this.status !== id) {
           this.$router.push({

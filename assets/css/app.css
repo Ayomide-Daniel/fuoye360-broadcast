@@ -120,7 +120,26 @@ input {
     font-weight: 800;
 }
 
+#view-image .slick-prev, #view-image .slick-next {
+    position: absolute;
+    z-index: 2;
+    opacity: 1;
+    transform: scale(1.5);
+    -webkit-transform: scale(1.5);
+    -moz-transform: scale(1.5);
+    -ms-transform: scale(1.5);
+    -o-transform: scale(1.5);
+}
+#view-image .slick-prev::before, #view-image .slick-next::before{
+    color: #000;
+}
+#view-image .slick-prev{
+    left: 1.5%;
+}
 
+#view-image .slick-next{
+    right: 1.5%;
+}
 @media screen and (min-width: 1024px) {
     .main-wrapper {
         display: grid;

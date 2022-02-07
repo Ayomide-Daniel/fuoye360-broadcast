@@ -66,7 +66,11 @@
           </nuxt-link>
           <span class="tweet-time"> . {{ d_broadcast.relative_at }} </span>
         </div>
-        <button class="tweet-options" @click="showModal(broadcast, null, 'option')">
+        <button
+          v-ripple
+          class="tweet-options"
+          @click="showModal(broadcast, null, 'option')"
+        >
           <i class="bi bi-chevron-down"></i>
         </button>
       </div>
@@ -78,13 +82,13 @@
           :key="img.id"
           v-ripple
           class="img-div"
+          @click="viewImage(broadcast.media, index)"
         >
           <img
             loading="lazy"
             :src="require('../assets/images/' + img)"
             :alt="`broadcast-img-${index}`"
             load="lazy"
-            @click="viewImage(require('../assets/images/' + img))"
           />
         </div>
       </div>
@@ -103,6 +107,11 @@ export default {
     },
     d_broadcast() {
       return this.broadcast;
+    },
+  },
+  methods: {
+    viewImage(src) {
+      return this.$root.$emit("viewImage", src);
     },
   },
 };
@@ -129,8 +138,15 @@ export default {
 }
 
 .tweet-options {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
   background: none;
+  outline: none;
   border: none;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .tweet-time {
