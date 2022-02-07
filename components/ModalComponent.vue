@@ -445,8 +445,8 @@ export default {
 }
 
 .tweeter-img {
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   object-fit: cover;
   background-color: var(--bg-color);
@@ -456,9 +456,6 @@ export default {
   width: 100%;
   outline: none;
   resize: none;
-  /* border: 1px solid var(--border-color); */
-  padding: 1rem;
-  border-radius: 1rem;
 }
 .comment-btn-div {
   display: flex;
