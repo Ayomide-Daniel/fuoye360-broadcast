@@ -2,28 +2,28 @@
   <div id="navbar-component">
     <v-container class="nav-container">
       <nav class="navlinks-container">
-        <nuxt-link to="/" class="navlinks">
+        <nuxt-link v-ripple to="/" class="navlinks">
           <i class="bi bi-house icon"></i> Home
         </nuxt-link>
-        <nuxt-link to="/trending" class="navlinks">
+        <nuxt-link v-ripple to="/trending" class="navlinks">
           <i class="bi bi-hash icon"></i> Trending
         </nuxt-link>
-        <nuxt-link to="/notifications" class="navlinks">
+        <nuxt-link v-ripple to="/notifications" class="navlinks">
           <i class="bi bi-bell icon"></i> Notifications
         </nuxt-link>
-        <nuxt-link to="/bookmarks" class="navlinks">
+        <nuxt-link v-ripple to="/bookmarks" class="navlinks">
           <i class="bi bi-bookmark icon"></i> Bookmarks
         </nuxt-link>
-        <nuxt-link to="/feedback" class="navlinks">
+        <nuxt-link v-ripple to="/feedback" class="navlinks">
           <i class="bi bi-question-circle icon"></i> Feedback
         </nuxt-link>
-        <nuxt-link to="/profile" class="navlinks">
+        <nuxt-link v-ripple to="/profile" class="navlinks">
           <i class="bi bi-person icon"></i> Profile
         </nuxt-link>
-        <nuxt-link to="/more" class="navlinks">
+        <nuxt-link v-ripple to="/more" class="navlinks">
           <i class="bi bi-three-dots icon"></i> More
         </nuxt-link>
-        <button to="/more" class="navbtn fill-btn">
+        <button v-ripple to="/more" class="navbtn fill-btn" @click="newBroadcast">
           <i class="bi bi-megaphone icon"></i> New Broadcast
         </button>
       </nav>
@@ -34,6 +34,11 @@
 <script>
 export default {
   name: "NavbarComponent",
+  methods: {
+    newBroadcast() {
+      this.$root.$emit("showModal", { modal: "broadcast" });
+    },
+  },
 };
 </script>
 

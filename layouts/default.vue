@@ -5,6 +5,7 @@
         <NavbarComponent />
         <Nuxt />
         <SearchComponent />
+        <ModalComponent />
       </div>
     </v-main>
   </v-app>

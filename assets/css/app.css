@@ -119,6 +119,8 @@ input {
     background: var(--green-bg);
     font-weight: 800;
 }
+
+
 @media screen and (min-width: 1024px) {
     .main-wrapper {
         display: grid;
