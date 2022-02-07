@@ -1,5 +1,5 @@
 <template>
-  <div class="tweet-func-div">
+  <div class="broadcast-func-div">
     <button @click="showModal('comment')">
       <i class="bi bi-chat icon"></i>
       <span class="comment-count">{{ btn_broadcast.meta.comments.count }}</span>
@@ -91,6 +91,14 @@ export default {
 </script>
 
 <style scoped>
+.broadcast-func-div {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 0.25rem 0;
+  margin-left: 58px;
+  justify-content: center;
+}
+
 button {
   transition: all ease-in-out 300ms;
 }
