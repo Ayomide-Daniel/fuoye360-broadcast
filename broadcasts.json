@@ -11,10 +11,12 @@
                 "name": "Brown"
             },
             "relative_at": "08 Jan, '21",
-            "media": [
-                "pic_1.png",
-                "pic_3.png"
-            ],
+            "media": {
+                "images": [
+                    "pic_1.png",
+                    "pic_3.png"
+                ]
+            },
             "retweeter": {
                 "name": "Tumz"
             },
@@ -91,10 +93,12 @@
                 "name": "Brown"
             },
             "relative_at": "08 Jan, '21",
-            "media": [
-                "pic_1.png",
-                "pic_2.png"
-            ],
+            "media": {
+                "images": [
+                    "pic_1.png",
+                    "pic_2.png"
+                ]
+            },
             "meta": {
                 "is_thread": false,
                 "retweeter_count": 4,

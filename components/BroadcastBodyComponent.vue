@@ -78,11 +78,11 @@
       <div class="tweet-body" v-html="d_broadcast.body"></div>
       <div v-if="d_broadcast.media != null" class="broadcast-media">
         <div
-          v-for="(img, index) in d_broadcast.media"
+          v-for="(img, index) in d_broadcast.media.images"
           :key="img.id"
           v-ripple
           class="img-div"
-          @click="viewImage(broadcast.media, index)"
+          @click="viewImage(broadcast.media.images, index)"
         >
           <img
             loading="lazy"

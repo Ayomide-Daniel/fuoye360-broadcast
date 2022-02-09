@@ -268,7 +268,9 @@ export default {
       imageSrc: null,
       form: {
         body: "",
-        image: null,
+        media: {
+          images: null,
+        },
       },
       tweet: {},
       loading: false,
@@ -301,11 +303,19 @@ export default {
     });
   },
   methods: {
-    uploadBroadcastImage(image) {
+    async uploadBroadcastImage(image) {
       const fd = new FormData(document.querySelector("#broadcast-images-form"));
-      Broadcast.uploadImage(fd).then((res) => {
-        console.log(res);
-      });
+      try {
+        const res = await Broadcast.uploadImage(fd);
+        if (typeof this.form.media.images !== "object") {
+          return this.form.media.images.push(res.data.data.url);
+        } else {
+          this.form.media.images = [];
+          return this.form.media.images.push(res.data.data.url);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
     setImageCarousel(src, index) {
       this.imageSrc = src;
