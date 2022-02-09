@@ -23,15 +23,20 @@
                 ></textarea>
               </div>
               <div class="broadcast-func-div">
-                <input
-                  id="broadcast-image-input"
+                <form
+                  id="broadcast-images-form"
                   style="display: none"
-                  type="file"
-                  name="images[]"
-                  accept=".jpeg, .jpg, .png"
-                  multiple
-                  @change="previewImage($event)"
-                />
+                  @submit.prevent="uploadBroadcastImage($event)"
+                >
+                  <input
+                    id="broadcast-image-input"
+                    type="file"
+                    name="broadcast-images[]"
+                    accept=".jpeg, .jpg, .png"
+                    multiple
+                    @change="previewImage($event)"
+                  />
+                </form>
                 <button v-ripple type="button" style="padding: 1rem margin-left:-1rem">
                   <i class="bi bi-image" @click="triggerClick"></i>
                 </button>
@@ -197,6 +202,7 @@
               <div class="input-div">
                 <button
                   v-if="!tweet.bookmarked"
+                  v-ripple
                   type="button"
                   class="add-to-bookmark"
                   @click="addToBookmarks(tweet.id)"
@@ -205,6 +211,7 @@
                 </button>
                 <button
                   v-else
+                  v-ripple
                   type="button"
                   class="remove-from-bookmark"
                   @click="removeFromBookmarks(tweet.id)"
@@ -213,12 +220,12 @@
                 </button>
               </div>
               <div class="input-div">
-                <button type="button" class="share-broadcast">
+                <button v-ripple type="button" class="share-broadcast">
                   <i class="bi bi-share icon"></i> Share Broadcast
                 </button>
               </div>
               <div class="input-div">
-                <button type="button" class="share-copy-link">
+                <button v-ripple type="button" class="share-copy-link">
                   <i class="bi bi-link-45deg icon"></i> Copy link
                 </button>
               </div>
@@ -235,6 +242,7 @@
 import $ from "jquery";
 import VueSlickCarousel from "vue-slick-carousel";
 import Broadcast from "~/assets/js/api/Broadcast";
+import Analytics from "~/assets/js/api/Analytics";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
 // optional style forarrows & dots
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
@@ -259,11 +267,6 @@ export default {
       },
       imageSrc: null,
       form: {
-        // id: "",
-        // broadcast: "",
-        // page: "",
-        // receiverid: "",
-        // action: "",
         body: "",
         image: null,
       },
@@ -298,6 +301,12 @@ export default {
     });
   },
   methods: {
+    uploadBroadcastImage(image) {
+      const fd = new FormData(document.querySelector("#broadcast-images-form"));
+      Broadcast.uploadImage(fd).then((res) => {
+        console.log(res);
+      });
+    },
     setImageCarousel(src, index) {
       this.imageSrc = src;
       //   this.$refs.carousel.goTo(index);
@@ -327,7 +336,7 @@ export default {
       const files = e.target.files;
       if (files) {
         if (files.length > 2) {
-          alert("You can only upload a maximum of 2 images. Happy Broadcasting!");
+          alert("You can only upload a maximum of 2 images");
           $("button[type=submit]").attr("disabled", "disabled");
         } else {
           for (let i = 0; i < files.length; i++) {
@@ -341,6 +350,8 @@ export default {
               this.image = pic.result;
             });
             reader.readAsDataURL(file);
+            this.uploadBroadcastImage(file);
+            // $("#broadcast-images-form").submit();
           }
         }
       }
@@ -367,6 +378,32 @@ export default {
     },
     triggerClick() {
       $("#broadcast-image-input").click();
+    },
+    removeFromBookmarks() {
+      Analytics.removeFromBookmarks({ post_id: this.tweet.id })
+        .then(() => {
+          this.tweet.bookmarked = false;
+          this.$root.$emit("removedFromBookmark", this.tweet.id);
+          this.$root.$emit("alertNotification", {
+            message: "Removed From Bookmarks",
+          });
+        })
+        .catch((err) => {
+          this.$root.$emit("alertNotification", { status: err.response.status });
+        });
+    },
+    addToBookmarks() {
+      Analytics.addToBookmarks({ post_id: this.tweet.id })
+        .then(() => {
+          this.tweet.bookmarked = true;
+          this.$root.$emit("addedFromBookmark", this.tweet.id);
+          this.$root.$emit("alertNotification", {
+            message: "Added To Bookmarks",
+          });
+        })
+        .catch((err) => {
+          this.$root.$emit("alertNotification", { status: err.response.status });
+        });
     },
   },
 };
@@ -518,10 +555,6 @@ export default {
   width: 15%;
   height: 8px;
   background: var(--input-color);
-  /* background: url("../assets/images/45degreee_fabric.png");
-  background-repeat: repeat;
-  background-size: 25%;
-  background-position: center; */
   border-radius: 0.5rem;
   -webkit-border-radius: 0.5rem;
   -moz-border-radius: 0.5rem;
@@ -533,13 +566,8 @@ export default {
   text-align: center;
 }
 .broadcast-modal form {
-  /* background: url("../assets/images/45degreee_fabric.png");
-  background-repeat: repeat;
-  background-size: 25%;
-  background-position: center; */
   background: var(--input-color);
   padding: 1rem;
-  font-size: 0.9rem;
 }
 .broadcast-modal .input-div {
   width: 100%;
@@ -593,5 +621,10 @@ export default {
   max-width: 768px;
   height: auto;
   margin: 0 auto;
+}
+#preview-div {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 0.5rem;
 }
 </style>

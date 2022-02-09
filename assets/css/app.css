@@ -140,6 +140,12 @@ input {
 #view-image .slick-next{
     right: 1.5%;
 }
+
+#preview-div img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
 @media screen and (min-width: 1024px) {
     .main-wrapper {
         display: grid;
