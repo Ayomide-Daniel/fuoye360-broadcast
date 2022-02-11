@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-scale-transition>
     <div
       v-if="showCreateBroadcast"
       id="tweet-box"
@@ -71,7 +71,7 @@
         </form>
       </div>
     </div>
-  </div>
+  </v-scale-transition>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-scale-transition>
     <div
       v-if="showProfile"
       id="profile-box"
@@ -30,7 +30,8 @@
         </div>
         <v-container>
           <form @submit.prevent="submitProfile">
-            <input type="file" style="display: none" />
+            <input type="file" style="display: none" name="profile-image" />
+            <input type="file" style="display: none" name="banner-image" />
             <div class="input-div">
               <label for="name">Name</label>
               <input id="name" v-model="form.name" type="text" />
@@ -55,7 +56,7 @@
         </v-container>
       </div>
     </div>
-  </div>
+  </v-scale-transition>
 </template>
 
 <script>
@@ -168,11 +169,15 @@ export default {
   height: 45px;
   border-radius: 50%;
   position: absolute;
-  top: 25%;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 2;
   background: rgba(0, 0, 0, 0.5);
+  margin: 0 auto;
+  color: var(--white-color);
+}
+.img-banner button {
+  top: 100px;
 }
 .profile-img {
   margin-left: 2rem;

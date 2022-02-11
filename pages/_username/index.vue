@@ -32,15 +32,15 @@
           <div class="profile-meta">
             <div>
               <h3 class="bi bi-geo-alt meta-icon"></h3>
-              Location <span>{{ user.location }}</span>
+              <span>{{ user.location }}</span>
             </div>
             <div>
               <h3 class="bi bi-link-45deg meta-icon"></h3>
-              <span></span>
+              <span>{{ user.url }}</span>
             </div>
             <div>
               <h3 class="bi bi-calendar-event meta-icon"></h3>
-              Location <span></span>
+              <span>{{ user.relative_at }}</span>
             </div>
           </div>
           <div class="profile-influence">

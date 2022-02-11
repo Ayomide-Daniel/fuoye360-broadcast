@@ -66,11 +66,7 @@
           </nuxt-link>
           <span class="tweet-time"> . {{ d_broadcast.relative_at }} </span>
         </div>
-        <button
-          v-ripple
-          class="tweet-options"
-          @click="showModal(broadcast, null, 'option')"
-        >
+        <button v-ripple class="tweet-options" type="button" @click="showModal('option')">
           <i class="bi bi-chevron-down"></i>
         </button>
       </div>
@@ -112,6 +108,20 @@ export default {
   methods: {
     viewImage(src) {
       return this.$root.$emit("viewImage", src);
+    },
+    showModal(modal) {
+      if (this.type === true) {
+        return this.$root.$emit("showModal", {
+          tweet: this.d_broadcast,
+          type: "origin",
+          modal,
+        });
+      }
+      return this.$root.$emit("showModal", {
+        tweet: this.d_broadcast,
+        type: "",
+        modal,
+      });
     },
   },
 };

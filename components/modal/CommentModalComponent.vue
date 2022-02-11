@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-scroll-y-reverse-transition>
     <div
       v-if="showComment"
       id="#comment-box"
@@ -58,7 +58,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </v-scroll-y-reverse-transition>
 </template>
 
 <script>

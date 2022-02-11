@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-scroll-y-reverse-transition>
     <div
       v-if="showShare"
       class="vs-wrapper broadcast-modal"
@@ -7,7 +7,6 @@
       @click="closeBroadcastModal($event, 'share')"
     >
       <div class="vs-container">
-        <!-- <div class="vs-content" style="border-radius: 1rem 1rem 0 0; position: relative"> -->
         <a href="#l-div" class="share-scroll-down"></a>
         <h4>What would you like to do?</h4>
         <form action="" method="post" style="border-radius: 1rem 1rem 0 0">
@@ -44,9 +43,8 @@
           <div id="l-div"></div>
         </form>
       </div>
-      <!-- </div> -->
     </div>
-  </div>
+  </v-scroll-y-reverse-transition>
 </template>
 
 <script>
@@ -74,9 +72,8 @@ export default {
       //   this.$refs.carousel.goTo(index);
       this.showImage = true;
     },
-
     closeBroadcastModal(e, modal) {
-      if ($(e.target).closest(".vs-content").length === 0) {
+      if ($(e.target).closest(".vs-container").length === 0) {
         return (this.showShare = false);
       }
     },
