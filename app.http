@@ -1,9 +1,12 @@
 # send post request to http://localhost:5000/api/v1/login
-POST http://localhost:5000/api/v1/login HTTP/1.1
+POST http://localhost:5000/api/v1/register HTTP/1.1
 content-type: application/json
 accept: "application/json"
 
 {
+    "name": "Ayomide Daniel",
     "email": "ayomidedaniel00@gmail.com",
-    "password": "password"
+    "password": "password",
+    "username": "dan_le_brown",
+    "phone_number": "08099887761"
 }

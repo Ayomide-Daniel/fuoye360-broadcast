@@ -2,6 +2,11 @@
     "data": {
         "id": 1,
         "name": "Ayomide Daniel",
-        "email": "ayomidedaniel00@gmail.com"
+        "email": "ayomidedaniel00@gmail.com",
+        "username": "dan_le_brown",
+        "bio": "taking things easy!",
+        "location": "Ikole",
+        "url": "https://facebook.com",
+        "relative_at": "08 Jan, '21"
     }
 }

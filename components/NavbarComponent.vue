@@ -21,7 +21,16 @@
         <nuxt-link v-ripple="{ class: 'success--text' }" to="/feedback" class="navlinks">
           <i class="bi bi-question-circle icon"></i> Feedback
         </nuxt-link>
-        <nuxt-link v-ripple="{ class: 'success--text' }" to="/profile" class="navlinks">
+        <nuxt-link
+          v-ripple="{ class: 'success--text' }"
+          :to="{
+            name: 'username',
+            params: {
+              username: user.username,
+            },
+          }"
+          class="navlinks"
+        >
           <i class="bi bi-person icon"></i> Profile
         </nuxt-link>
         <nuxt-link v-ripple="{ class: 'success--text' }" to="/more" class="navlinks">
@@ -43,6 +52,11 @@
 <script>
 export default {
   name: "NavbarComponent",
+  computed: {
+    user() {
+      return this.$store.state.User.data;
+    },
+  },
   methods: {
     newBroadcast() {
       this.$root.$emit("showModal", { modal: "broadcast" });
