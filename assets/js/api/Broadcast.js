@@ -18,7 +18,7 @@ export default {
 
   async createBroadcast(fd) {
     return await Api.post('/broadcast', fd, {
-      // headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { 'Content-Type': 'multipart/form-data' },
     })
   },
   async createComment(fd) {

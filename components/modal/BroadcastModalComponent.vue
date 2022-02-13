@@ -1,5 +1,5 @@
 <template>
-  <v-scale-transition>
+  <v-scale-transition origin="center">
     <div
       v-if="showCreateBroadcast"
       id="tweet-box"
@@ -7,7 +7,16 @@
       @click="closeBroadcastModal($event, 'broadcast')"
     >
       <div class="vs-container">
-        <form enctype="multipart/form-data" @submit.prevent="newBroadcast($event)">
+        <form @submit.prevent="newBroadcast($event)">
+          <input
+            id="broadcast-image-input"
+            style="display: none"
+            type="file"
+            name="broadcast-images"
+            accept=".jpeg, .jpg, .png"
+            multiple
+            @change="previewImage($event)"
+          />
           <div class="input-div">
             <textarea
               id="new-broadcast"
@@ -21,20 +30,10 @@
             ></textarea>
           </div>
           <div class="broadcast-func-div">
-            <form
+            <!-- <form
               id="broadcast-images-form"
-              style="display: none"
               @submit.prevent="uploadBroadcastImage($event)"
-            >
-              <input
-                id="broadcast-image-input"
-                type="file"
-                name="broadcast-images[]"
-                accept=".jpeg, .jpg, .png"
-                multiple
-                @change="previewImage($event)"
-              />
-            </form>
+            ></form> -->
             <button v-ripple type="button" style="padding: 1rem margin-left:-1rem">
               <i class="bi bi-image" @click="triggerClick"></i>
             </button>
@@ -119,10 +118,10 @@ export default {
     },
     newBroadcast(e) {
       this.loading = true;
-      //   const fd = new FormData(e.target);
-      Broadcast.createBroadcast(this.form)
+      const fd = new FormData(e.target);
+      Broadcast.createBroadcast(fd)
         .then((res) => {
-          this.showCreateBroadcast = false;
+          // this.showCreateBroadcast = false;
           this.loading = false;
           this.$root.$emit("appendBroadcast", res.data.data.broadcast);
           this.form.body = "";
@@ -150,14 +149,14 @@ export default {
               this.image = pic.result;
             });
             reader.readAsDataURL(file);
-            this.uploadBroadcastImage(file);
+            // this.uploadBroadcastImage(file);
             // $("#broadcast-images-form").submit();
           }
         }
       }
     },
     closeBroadcastModal(e, modal) {
-      if ($(e.target).closest(".vs-content").length === 0) {
+      if ($(e.target).closest(".vs-container").length === 0) {
         if (modal === "broadcast") {
           return (this.showCreateBroadcast = false);
         }

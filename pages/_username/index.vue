@@ -36,7 +36,7 @@
             </div>
             <div>
               <h3 class="bi bi-link-45deg meta-icon"></h3>
-              <span>{{ user.url }}</span>
+              <a :href="user.url" style="color: var(--brand-color)">{{ user.url }}</a>
             </div>
             <div>
               <h3 class="bi bi-calendar-event meta-icon"></h3>

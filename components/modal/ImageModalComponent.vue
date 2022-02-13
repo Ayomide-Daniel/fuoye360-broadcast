@@ -1,5 +1,5 @@
 <template>
-  <v-scale-transition>
+  <v-scale-transition origin="center">
     <div v-if="showImage" id="view-image" class="vs-wrapper" @click="closeImage($event)">
       <div class="swiper-container">
         <VueSlickCarousel

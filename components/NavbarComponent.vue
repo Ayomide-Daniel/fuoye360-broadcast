@@ -102,7 +102,6 @@ export default {
 }
 .navlinks:hover {
   background: var(--green-bg);
-  font-weight: 800;
 }
 .fill-btn {
   background: var(--brand-color);

@@ -1,5 +1,5 @@
 <template>
-  <v-scale-transition>
+  <v-scale-transition origin="center">
     <div
       v-if="showProfile"
       id="profile-box"
@@ -20,37 +20,66 @@
         </div>
         <div>
           <div class="img-banner">
-            <img :src="require('~/assets/images/brown.jpg')" alt="" srcset="" />
-            <button><i class="bi bi-camera"></i></button>
+            <img
+              id="profile-banner"
+              :src="require('~/assets/images/brown.jpg')"
+              :alt="`${user.name}-profile-banner`"
+              srcset=""
+            />
+            <button @click="triggerClick('banner')"><i class="bi bi-camera"></i></button>
           </div>
           <div class="profile-img">
-            <img :src="require('~/assets/images/brown.jpg')" alt="" srcset="" />
-            <button><i class="bi bi-camera"></i></button>
+            <img
+              id="profile-image"
+              :src="require('~/assets/images/brown.jpg')"
+              :alt="`${user.name}-profile-image`"
+              srcset=""
+            />
+            <button @click="triggerClick('image')"><i class="bi bi-camera"></i></button>
           </div>
         </div>
         <v-container>
-          <form @submit.prevent="submitProfile">
-            <input type="file" style="display: none" name="profile-image" />
-            <input type="file" style="display: none" name="banner-image" />
+          <div style="display: none">
+            <form id="profile-image-form"></form>
+            <form id="profile-banner-form"></form>
+          </div>
+          <form id="profile-form" @submit.prevent="submitProfile">
+            <input
+              id="profile-image-input"
+              type="file"
+              style="display: none"
+              name="user-image"
+              accept=".jpeg, .jpg, .png"
+              @change="previewImage($event, 'image')"
+            />
+            <input
+              id="profile-banner-input"
+              type="file"
+              style="display: none"
+              name="user-banner"
+              accept=".jpeg, .jpg, .png"
+              @change="previewImage($event, 'banner')"
+            />
             <div class="input-div">
               <label for="name">Name</label>
-              <input id="name" v-model="form.name" type="text" />
+              <input id="name" v-model="form.name" type="text" name="name" />
             </div>
             <div class="input-div">
               <label for="username">Username</label>
-              <input id="username" v-model="form.username" type="text" />
+              <input id="username" v-model="form.username" type="text" name="username" />
+              <i class="bi bi-at at-icon"></i>
             </div>
             <div class="input-div">
               <label for="bio">Bio</label>
-              <textarea id="bio" v-model="form.bio"></textarea>
+              <textarea id="bio" v-model="form.bio" name="bio"></textarea>
             </div>
             <div class="input-div">
               <label for="location">Location</label>
-              <input id="location" v-model="form.location" type="text" />
+              <input id="location" v-model="form.location" type="text" name="location" />
             </div>
             <div class="input-div">
               <label for="website">Website</label>
-              <input id="website" v-model="form.url" type="url" />
+              <input id="website" v-model="form.url" type="url" name="url" />
             </div>
           </form>
         </v-container>
@@ -61,12 +90,13 @@
 
 <script>
 import $ from "jquery";
-// import Broadcast from "~/assets/js/api/Broadcast";
+import User from "~/assets/js/api/User";
 export default {
   name: "ProfileModalComponent",
   data() {
     return {
       showProfile: false,
+      profileImagesChanged: false,
     };
   },
   computed: {
@@ -83,6 +113,22 @@ export default {
     });
   },
   methods: {
+    previewImage(event, type) {
+      const files = event.target.files;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+        reader.addEventListener("load", function (e) {
+          const pic = e.target;
+          if (type === "image") {
+            $("#profile-image").attr("src", pic.result);
+          } else {
+            $("#profile-banner").attr("src", pic.result);
+          }
+        });
+        reader.readAsDataURL(file);
+      }
+    },
     closeBroadcastModal(e) {
       if (
         $(e.target).closest(".vs-container").length === 0 ||
@@ -92,8 +138,40 @@ export default {
       }
     },
     submitProfile() {
-      return true;
+      const fd = new FormData(document.querySelector("#profile-form"));
+      User.updateProfile(fd)
+        .then((res) => {
+          console.log(res.data.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
+    triggerClick(type) {
+      if (type === "banner") {
+        return $("#profile-banner-input").click();
+      }
+      if (type === "image") {
+        return $("#profile-image-input").click();
+      }
+    },
+    // uploadProfileImage() {
+    //   const fd = new FormData(document.querySelector("#profile-image-form"));
+    //   this.upload(fd);
+    // },
+    // uploadProfileBanner() {
+    //   const fd = new FormData(document.querySelector("#profile-banner-form"));
+    //   this.upload(fd);
+    // },
+    // async upload(fd) {
+    //   try {
+    //     const res = await User.uploadImage(fd);
+    //     this.form.media = res.data.data.url;
+    //     return true;
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
   },
 };
 </script>
@@ -177,7 +255,7 @@ export default {
   color: var(--white-color);
 }
 .img-banner button {
-  top: 100px;
+  top: 80px;
 }
 .profile-img {
   margin-left: 2rem;
@@ -220,7 +298,7 @@ form .input-div {
 }
 
 form .input-div:hover {
-  border: 2px solid var(--brand-color);
+  border: 1px solid var(--brand-color);
 }
 form .input-div:hover label {
   color: var(--brand-color);
@@ -242,9 +320,17 @@ form textarea {
   background: none;
   outline: none;
 }
-
+form .input-div .at-icon {
+  background: var(--input-color);
+  align-self: normal;
+  padding: 0.5rem 0.8rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
 form textarea {
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   height: 100px;
   resize: none;
 }
