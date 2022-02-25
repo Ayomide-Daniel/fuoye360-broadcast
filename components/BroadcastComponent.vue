@@ -12,7 +12,10 @@
         </div>
         <BroadcastBodyComponent :broadcast="d_broadcast" />
         <BroadcastButtonComponent :broadcast="d_broadcast" class="tweet-btn-component" />
-        <div v-if="d_broadcast.meta.is_thread" class="thread-icon-div">
+        <div
+          v-if="d_broadcast.meta && d_broadcast.meta.is_thread"
+          class="thread-icon-div"
+        >
           <span class="thread-icon"> <i class="bi bi-newspaper icon"></i> Thread </span>
         </div>
       </div>

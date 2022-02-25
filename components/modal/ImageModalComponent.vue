@@ -11,12 +11,7 @@
           :infinite="false"
         >
           <div v-for="(img, index) in imageSrc" :key="index">
-            <img
-              loading="lazy"
-              :src="require('@/assets/images/' + img)"
-              alt=""
-              class=""
-            />
+            <img loading="lazy" :src="img" :alt="`${index}- broadcast image`" />
           </div>
         </VueSlickCarousel>
         <!-- Add Pagination -->

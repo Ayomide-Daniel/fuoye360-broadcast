@@ -5,12 +5,16 @@
     </div>
     <div style="border-bottom: 1px solid var(--border-color)">
       <div class="img-banner">
-        <img :src="require('~/assets/images/brown.jpg')" alt="" srcset="" />
+        <img :src="user.banner" :alt="`${user.full_name}-profile-banner`" lazy="load" />
       </div>
       <v-container class="profile-meta-div">
         <div class="top-meta-div">
           <div class="profile-img">
-            <img :src="require('~/assets/images/brown.jpg')" alt="" srcset="" />
+            <img
+              :src="user.image"
+              :alt="`${user.full_name}-profile-picture`"
+              lazy="load"
+            />
           </div>
           <div class="btn-div">
             <button v-ripple type="button" @click="showEditProfile">Edit Profile</button>
@@ -18,25 +22,23 @@
         </div>
         <div class="bottom-meta-div">
           <h2>
-            {{ user.name }}
+            {{ user.full_name }}
             <span class="verified-patch"><i class="bi bi-patch-check-fill"></i></span>
           </h2>
           <span>@{{ user.username }}</span>
           <p class="profile-bio">
-            <b>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veniam minus quasi
-              alias esse id nemo. In neque dolore est, esse ipsa doloribus officia fugit
-              beatae praesentium quidem rerum dolores accusamus.
-            </b>
+            {{ user.bio }}
           </p>
-          <div class="profile-meta">
+          <div class="profile-meta grid-row">
             <div>
               <h3 class="bi bi-geo-alt meta-icon"></h3>
               <span>{{ user.location }}</span>
             </div>
             <div>
               <h3 class="bi bi-link-45deg meta-icon"></h3>
-              <a :href="user.url" style="color: var(--brand-color)">{{ user.url }}</a>
+              <a :href="user.url" style="color: var(--brand-color)" target="_blank">{{
+                user.url
+              }}</a>
             </div>
             <div>
               <h3 class="bi bi-calendar-event meta-icon"></h3>
@@ -45,11 +47,11 @@
           </div>
           <div class="profile-influence">
             <div>
-              <h3>100</h3>
+              <h3>{{ user.following.length }}</h3>
               <span>Following</span>
             </div>
             <div>
-              <h3>100</h3>
+              <h3>{{ user.followers.length }}</h3>
               <span>Followers</span>
             </div>
           </div>
@@ -63,6 +65,7 @@
 <script>
 export default {
   name: "UserIndexPage",
+  middleware: ["authenticated"],
   computed: {
     user() {
       return this.$store.state.User.data;
@@ -99,8 +102,8 @@ export default {
 .profile-img img {
   padding: 0.25rem;
   background: var(--white-color);
-  width: 140px;
-  height: 140px;
+  width: 125px;
+  height: 125px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -128,6 +131,7 @@ export default {
 }
 .profile-bio {
   margin: 1rem 0;
+  font-weight: 500;
 }
 .profile-meta,
 .profile-influence {
@@ -141,7 +145,14 @@ export default {
   display: flex;
   align-items: center;
 }
-.meta-icon {
-  /* margin-right: -0.5rem; */
+
+.grid-row {
+  display: grid;
+  grid-gap: 0.5rem;
+}
+@media screen and (min-width: 1024px) {
+  .grid-row {
+    display: flex;
+  }
 }
 </style>

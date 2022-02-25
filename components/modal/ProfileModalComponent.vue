@@ -15,25 +15,39 @@
             <h3>Edit Profile</h3>
           </v-row>
           <div>
-            <button type="button" class="save-btn" @click="submitProfile">Save</button>
+            <button
+              v-ripple
+              type="submit"
+              class="save-btn"
+              style="opacity: 0.75"
+              @click.prevent="submitProfile"
+            >
+              <span v-if="btnLoading"
+                ><v-progress-circular
+                  indeterminate
+                  color="white"
+                  width="3"
+                  size="20"
+                ></v-progress-circular
+              ></span>
+              <span v-else> Save</span>
+            </button>
           </div>
         </div>
         <div>
           <div class="img-banner">
             <img
               id="profile-banner"
-              :src="require('~/assets/images/brown.jpg')"
-              :alt="`${user.name}-profile-banner`"
-              srcset=""
+              :src="user.banner"
+              :alt="`${user.full_name}'s profile banner`"
             />
             <button @click="triggerClick('banner')"><i class="bi bi-camera"></i></button>
           </div>
           <div class="profile-img">
             <img
               id="profile-image"
-              :src="require('~/assets/images/brown.jpg')"
-              :alt="`${user.name}-profile-image`"
-              srcset=""
+              :src="user.image"
+              :alt="`${user.full_name}'s profile picture`"
             />
             <button @click="triggerClick('image')"><i class="bi bi-camera"></i></button>
           </div>
@@ -60,26 +74,35 @@
               accept=".jpeg, .jpg, .png"
               @change="previewImage($event, 'banner')"
             />
-            <div class="input-div">
-              <label for="name">Name</label>
-              <input id="name" v-model="form.name" type="text" name="name" />
+            <div class="grid-row">
+              <div class="input-div">
+                <label for="full_name">Name</label>
+                <input
+                  id="full_name"
+                  :value="form.full_name"
+                  type="text"
+                  name="full_name"
+                />
+              </div>
+              <div class="input-div">
+                <label for="username">Username</label>
+                <input id="username" :value="form.username" type="text" name="username" />
+                <i class="bi bi-at at-icon"></i>
+              </div>
             </div>
-            <div class="input-div">
-              <label for="username">Username</label>
-              <input id="username" v-model="form.username" type="text" name="username" />
-              <i class="bi bi-at at-icon"></i>
+            <div class="grid-row">
+              <div class="input-div">
+                <label for="location">Location</label>
+                <input id="location" :value="form.location" type="text" name="location" />
+              </div>
+              <div class="input-div">
+                <label for="website">Website</label>
+                <input id="website" :value="form.url" type="url" name="url" />
+              </div>
             </div>
             <div class="input-div">
               <label for="bio">Bio</label>
-              <textarea id="bio" v-model="form.bio" name="bio"></textarea>
-            </div>
-            <div class="input-div">
-              <label for="location">Location</label>
-              <input id="location" v-model="form.location" type="text" name="location" />
-            </div>
-            <div class="input-div">
-              <label for="website">Website</label>
-              <input id="website" v-model="form.url" type="url" name="url" />
+              <textarea id="bio" :value="form.bio" name="bio"></textarea>
             </div>
           </form>
         </v-container>
@@ -97,6 +120,7 @@ export default {
     return {
       showProfile: false,
       profileImagesChanged: false,
+      btnLoading: false,
     };
   },
   computed: {
@@ -137,15 +161,15 @@ export default {
         return (this.showProfile = false);
       }
     },
-    submitProfile() {
+    async submitProfile() {
+      this.btnLoading = true;
       const fd = new FormData(document.querySelector("#profile-form"));
-      User.updateProfile(fd)
-        .then((res) => {
-          console.log(res.data.data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      try {
+        const res = await User.updateProfile(fd);
+        this.$store.commit("User/setUserData", res.data.data.user);
+        this.showProfile = false;
+      } catch (error) {}
+      this.btnLoading = false;
     },
     triggerClick(type) {
       if (type === "banner") {
@@ -155,23 +179,6 @@ export default {
         return $("#profile-image-input").click();
       }
     },
-    // uploadProfileImage() {
-    //   const fd = new FormData(document.querySelector("#profile-image-form"));
-    //   this.upload(fd);
-    // },
-    // uploadProfileBanner() {
-    //   const fd = new FormData(document.querySelector("#profile-banner-form"));
-    //   this.upload(fd);
-    // },
-    // async upload(fd) {
-    //   try {
-    //     const res = await User.uploadImage(fd);
-    //     this.form.media = res.data.data.url;
-    //     return true;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
   },
 };
 </script>
@@ -201,7 +208,6 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  margin-right: 1rem;
 }
 
 .meta-div .icon {
@@ -209,7 +215,8 @@ export default {
 }
 
 .meta-div .save-btn {
-  padding: 0.5rem 2rem;
+  min-width: 100px;
+  padding: 0.5rem 1rem;
   background: var(--brand-color);
   border-radius: 0.5rem;
   border: 1px solid var(--brand-color);
@@ -333,5 +340,13 @@ form textarea {
   padding: 0.5rem 1rem;
   height: 100px;
   resize: none;
+}
+
+@media screen and (min-width: 768px) {
+  .grid-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+  }
 }
 </style>

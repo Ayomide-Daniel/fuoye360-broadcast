@@ -10,6 +10,7 @@
 <script>
 export default {
   name: "TrendingPage",
+  middleware: "authenticated",
 };
 </script>
 

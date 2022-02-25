@@ -10,6 +10,7 @@
 <script>
 export default {
   name: "BookmarksPage",
+  middleware: "authenticated",
 };
 </script>
 

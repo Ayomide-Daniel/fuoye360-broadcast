@@ -90,3 +90,7 @@ sw.*
 *.swp
 
 *.http
+
+broadcasts.json
+
+user.json

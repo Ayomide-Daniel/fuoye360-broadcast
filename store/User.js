@@ -1,7 +1,6 @@
-import User from '../user.json'
-
 const state = () => ({
-  data: User.data,
+  auth: false,
+  data: {},
 })
 
 const getters = {
@@ -17,25 +16,13 @@ const actions = {
   //   },
 }
 const mutations = {
-  //   setbroadcaststatus: (state, data) => {
-  //     const broadcastsFx = state.broadcasts.map((question) => {
-  //       if (question.title === data.question.title) {
-  //         question.status = true
-  //         question.selectedOption = data.answer
-  //       }
-  //       return question
-  //     })
-  //     state.broadcasts = broadcastsFx
-  //   },
-  //   updateResult: (state) => {
-  //     state.broadcasts.forEach((question) => {
-  //       if (question.selectedOption + 1 === question.answer) {
-  //         state.result++
-  //       }
-  //     })
-  //     state.hasTakenQuiz = true
-  //     return true
-  //   },
+  setUserData: (state, data) => {
+    state.data = data
+    state.auth = true
+  },
+  updateUserFollowing: (state, data) => {
+    state.data.following = data
+  },
 }
 
 export default {

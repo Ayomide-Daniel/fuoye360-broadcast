@@ -4,6 +4,9 @@ export default {
   register(form) {
     return Api.post('/register', form)
   },
+  googleOauth(data) {
+    return Api.post('/oauth/google', data)
+  },
   login(form) {
     // await Csrf.getCookie(true)
     return Api.post('/login', form)

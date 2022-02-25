@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+// require('dotenv').config({ path: './.env' })
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -41,7 +42,7 @@ export default {
   css: ['@/assets/css/app.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['@/plugins/assets.js'],
+  plugins: ['@/plugins/assets.js', '@/plugins/vue-google-oauth2.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: {
@@ -60,6 +61,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    // '@nuxtjs/auth-next',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -89,4 +91,23 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  // auth: {
+  //   strategies: {
+  //     google: {
+  //       clientId: process.env.GOOGLE_CLIENT_ID,
+  //       scope: ['profile', 'email'],
+  //       codeChallengeMethod: '',
+  //       responseType: 'code',
+  //       // responseType: 'token id_token',
+  //       endpoints: {
+  //         token: 'http://localhost:5000/api/v1/oauth/google', // somm backend url to resolve your auth with google and give you the token back
+  //         userInfo: 'http://localhost:5000/api/v1/user/', // the endpoint to get the user info after you recived the token
+  //       },
+  //     },
+  //   },
+  // },
+  env: {
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  },
 }

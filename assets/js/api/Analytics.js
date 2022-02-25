@@ -19,4 +19,11 @@ export default {
   async removeFromBookmarks(data) {
     return await Api.delete('/analytics/bookmark', data)
   },
+  async followUser(data) {
+    return await Api.post('/analytics/follow', data)
+  },
+
+  async unfollowUser(data) {
+    return await Api.delete('/analytics/follow', data)
+  },
 }

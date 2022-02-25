@@ -10,41 +10,36 @@
         <a href="#l-div" class="share-scroll-down"></a>
         <h4>What would you like to do?</h4>
         <form action="" method="post" style="border-radius: 1rem 1rem 0 0">
-          <div v-if="tweet.user_id === user.id">
+          <div v-if="tweet.user._id === user._id">
             <button
               type="button"
               class="delete-broadcast"
-              @click="deleteBroadcast(tweet.id)"
+              @click="deleteBroadcast(tweet._id)"
             >
-              <i class="fas fa-trash"></i> Delete broadcast
+              <i class="bi bi-trash icon"></i> Delete broadcast
             </button>
           </div>
-          <div v-if="tweet.user_id != user.id">
+          <div v-if="tweet.user._id !== user._id">
             <div class="input-div">
               <button
-                v-if="tweet.is_following === true"
+                v-if="tweet.meta.is_following === true"
                 type="button"
                 class="report-broadcast"
-                @click="unflwUser(tweet.user_id)"
+                @click="unfollowUser"
               >
                 <i class="bi bi-person-x icon"></i> Unfollow
-                <b>{{ tweet.user.name }}</b>
+                <b>{{ tweet.user.full_name }}</b>
               </button>
-              <button
-                v-else
-                type="button"
-                class="report-broadcast"
-                @click="flwUser(tweet.user_id)"
-              >
+              <button v-else type="button" class="report-broadcast" @click="followUser">
                 <i class="bi bi-person-check icon"></i> Follow
-                <b>{{ tweet.user.name }}</b>
+                <b>{{ tweet.user.full_name }}</b>
               </button>
             </div>
             <div class="input-div">
               <button
                 type="button"
                 class="report-broadcast"
-                @click="reportBroadcast(tweet.id)"
+                @click="reportBroadcast(tweet._id)"
               >
                 <i class="bi bi-flag icon"></i> Report Broadcast
               </button>
@@ -59,7 +54,8 @@
 
 <script>
 import $ from "jquery";
-// import Analytics from "~/assets/js/api/Analytics";
+import Broadcast from "~/assets/js/api/Broadcast";
+import Analytics from "~/assets/js/api/Analytics";
 export default {
   name: "OptionModalComponent",
   data() {
@@ -72,9 +68,6 @@ export default {
     user() {
       return this.$store.state.User.data;
     },
-    // btn_broadcast() {
-    //   return this.broadcast;
-    // },
   },
   mounted() {
     this.$root.$on("showModal", ({ tweet, type, modal }) => {
@@ -88,6 +81,36 @@ export default {
     closeBroadcastModal(e) {
       if ($(e.target).closest(".vs-container").length === 0) {
         return (this.showOption = false);
+      }
+    },
+    async deleteBroadcast() {
+      try {
+        const res = await Broadcast.deleteBroadcast({ broadcast_id: this.tweet._id });
+        this.$root.$emit("broacastDeleted", this.tweet._id);
+        console.log(res);
+      } catch (error) {}
+    },
+
+    async followUser() {
+      try {
+        const res = await Analytics.followUser({ user_id: this.tweet.user._id });
+        this.tweet.meta.is_following = true;
+        this.$store.commit("User/updateUserFollowing", res.data.data.sender);
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async unfollowUser() {
+      try {
+        const res = await Analytics.unfollowUser({
+          data: { user_id: this.tweet.user._id },
+        });
+        this.tweet.meta.is_following = false;
+        this.$store.commit("User/updateUserFollowing", res.data.data.sender);
+        console.log(res);
+      } catch (error) {
+        console.log(error);
       }
     },
   },

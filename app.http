@@ -1,9 +1,16 @@
 # send post request to http://localhost:5000/api/v1/login
-POST http://localhost:5000/api/v1/register HTTP/1.1
+# POST http://localhost:5000/api/v1/login HTTP/1.1
+# POST http://localhost:5000/api/v1/analytics/like-broadcast HTTP/1.1
+# POST http://localhost:5000/api/v1/broadcast HTTP/1.1
+GET http://localhost:5000/api/v1/broadcast HTTP/1.1
+# POST http://fuoye360-node-api.herokuapp.com/api/v1/register
 content-type: application/json
-accept: "application/json"
+accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJlbGF0aXZlX2F0IjoiMTMgRmViLCAnMjIiLCJpZCI6MSwibmFtZSI6IkF5b21pZGUgRGFuaWVsIiwidXNlcm5hbWUiOiJkYW5fbGVfYnJvd24iLCJlbWFpbCI6ImF5b21pZGVkYW5pZWwwMEBnbWFpbC5jb20iLCJwaG9uZV9udW1iZXIiOiIwODA5OTg4Nzc2MSIsIm1lZGlhIjpudWxsLCJsb2NhdGlvbiI6bnVsbCwidXJsIjpudWxsLCJwYXNzd29yZCI6IiQyYiQxMCROd2NvVUllbHMyR2svMlMzVzZ4TFBlMlc3U21sOFNWUldvUnYwajJaTy9zU2lXSVR2d0xpbSIsImVtYWlsX3ZlcmlmaWVkX2F0IjpudWxsLCJ1cGRhdGVkX2F0IjoiMjAyMi0wMi0xM1QxNDoxNTo1My41NjNaIiwiY3JlYXRlZF9hdCI6IjIwMjItMDItMTNUMTQ6MTU6NTMuNTYzWiJ9LCJpYXQiOjE2NDUzOTM3MjksImV4cCI6MTY0NTQwMDkyOX0.5F8-2xni4xQ-nOHkhCgcEwh13uh6gOA92Dq_mFj0TJ8
 
 {
+    "broadcast_id": 4,
+    "body": "Hi mom again. I'm so glad to see you mom.A good commnet",
     "name": "Ayomide Daniel",
     "email": "ayomidedaniel00@gmail.com",
     "password": "password",

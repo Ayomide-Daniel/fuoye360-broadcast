@@ -4,64 +4,68 @@
       <nuxt-link
         :to="{
           name: 'username',
-          params: { username: d_broadcast.user.name },
+          params: { username: d_broadcast.user.full_name },
           query: { v: 'broadcast' },
         }"
         ><img
           loading="lazy"
-          :alt="d_broadcast.user.name"
+          :alt="`${d_broadcast.user.full_name}'s profile picture`"
           class="tweeter-img"
-          :src="require('@/assets/images/brown.jpg')"
+          :src="d_broadcast.user.image"
       /></nuxt-link>
-      <!-- :src="$asset('storage/profile_images/' + d_broadcast.user.image)" -->
     </div>
     <div class="tweet-content">
-      <div
-        v-if="d_broadcast.meta._info.count > 0 && !d_broadcast.meta.is_thread"
-        class="info-display"
-      >
-        <div v-if="d_broadcast.meta._info.type === 'retweets'" class="tweet-retweet">
-          <div v-if="d_broadcast.meta._info.user.id === user.id">
-            <b> <i class="bi bi-megaphone-fill icon"></i> You rebroadcasted this </b>
+      <div v-if="d_broadcast.meta">
+        <div
+          v-if="d_broadcast.meta._info.count > 0 && !d_broadcast.meta.is_thread"
+          class="info-display"
+        >
+          <div v-if="d_broadcast.meta._info.type === 'retweets'" class="tweet-retweet">
+            <div v-if="d_broadcast.meta._info.user.id === user.id">
+              <b> <i class="bi bi-megaphone-fill icon"></i> You rebroadcasted this </b>
+            </div>
+            <div v-else-if="d_broadcast.meta._info.count === 1">
+              <i class="bi bi-megaphone-fill icon"></i>
+              <b> {{ d_broadcast.meta._info.user.full_name }} rebroadcasted this </b>
+            </div>
+            <div v-else-if="d_broadcast.meta._info.count === 2">
+              <i class="bi bi-megaphone-fill icon"></i>
+              <b>
+                {{ d_broadcast.meta._info.user.full_name }} and 1 other rebrodcasted
+                this</b
+              >
+            </div>
+            <div v-else-if="d_broadcast.meta._info.count > 2">
+              <i class="bi bi-megaphone-fill icon"></i>
+              <b>
+                {{ d_broadcast.meta._info.user.full_name }} and
+                {{ d_broadcast.meta._info.count }} others rebroadcasted this
+              </b>
+            </div>
           </div>
-          <div v-else-if="d_broadcast.meta._info.count === 1">
-            <i class="bi bi-megaphone-fill icon"></i>
-            <b> {{ d_broadcast.meta._info.user.name }} rebroadcasted this </b>
-          </div>
-          <div v-else-if="d_broadcast.meta._info.count === 2">
-            <i class="bi bi-megaphone-fill icon"></i>
-            <b> {{ d_broadcast.meta._info.user.name }} and 1 other rebrodcasted this</b>
-          </div>
-          <div v-else-if="d_broadcast.meta._info.count > 2">
-            <i class="bi bi-megaphone-fill icon"></i>
-            <b>
-              {{ d_broadcast.meta._info.user.name }} and
-              {{ d_broadcast.meta._info.count }} others rebroadcasted this
-            </b>
-          </div>
-        </div>
-        <div v-else-if="d_broadcast.meta._info.type === 'likes'" class="tweet-liked">
-          <div v-if="d_broadcast.meta._info.count === 1">
-            <i class="bi bi-heart-fill icon"></i>
-            <b> {{ d_broadcast.meta._info.user.name }} liked this </b>
-          </div>
-          <div v-else-if="d_broadcast.meta._info.count === 2">
-            <i class="bi bi-heart-fill icon"></i>
-            <b> {{ d_broadcast.meta._info.user.name }} and 1 other liked this </b>
-          </div>
-          <div v-else-if="d_broadcast.meta._info.count > 2">
-            <i class="bi bi-heart-fill icon"></i>
-            <b>
-              {{ d_broadcast.meta._info.user.name }} and
-              {{ d_broadcast.meta._info.count }} others liked this
-            </b>
+          <div v-else-if="d_broadcast.meta._info.type === 'likes'" class="tweet-liked">
+            <div v-if="d_broadcast.meta._info.count === 1">
+              <i class="bi bi-heart-fill icon"></i>
+              <b> {{ d_broadcast.meta._info.user.full_name }} liked this </b>
+            </div>
+            <div v-else-if="d_broadcast.meta._info.count === 2">
+              <i class="bi bi-heart-fill icon"></i>
+              <b> {{ d_broadcast.meta._info.user.full_name }} and 1 other liked this </b>
+            </div>
+            <div v-else-if="d_broadcast.meta._info.count > 2">
+              <i class="bi bi-heart-fill icon"></i>
+              <b>
+                {{ d_broadcast.meta._info.user.full_name }} and
+                {{ d_broadcast.meta._info.count }} others liked this
+              </b>
+            </div>
           </div>
         </div>
       </div>
       <div class="tweet-profile-div">
         <div class="profile-meta">
           <nuxt-link to="" style="text-decoration: none; color: var(--primary-color)">
-            <span class="tweet-profilename">{{ d_broadcast.user.name }}</span
+            <span class="tweet-profilename">{{ d_broadcast.user.full_name }}</span
             ><span class="tweet-time" style="font-weight: 600">@brown</span>
           </nuxt-link>
           <span class="tweet-time"> . {{ d_broadcast.relative_at }} </span>
@@ -72,20 +76,18 @@
       </div>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="tweet-body" v-html="d_broadcast.body"></div>
-      <div v-if="d_broadcast.media != null" class="broadcast-media">
+      <div
+        v-if="d_broadcast.media != null && d_broadcast.media.length > 0"
+        class="broadcast-media"
+      >
         <div
-          v-for="(img, index) in d_broadcast.media.images"
-          :key="img.id"
+          v-for="(img, index) in d_broadcast.media"
+          :key="index"
           v-ripple
           class="img-div"
-          @click="viewImage(broadcast.media.images, index)"
+          @click="viewImage(broadcast.media, index)"
         >
-          <img
-            loading="lazy"
-            :src="require('../assets/images/' + img)"
-            :alt="`broadcast-img-${index}`"
-            load="lazy"
-          />
+          <img loading="lazy" :src="img" :alt="`${index}- broadcast image`" />
         </div>
       </div>
     </div>
@@ -213,7 +215,7 @@ export default {
 
 .broadcast-media .img-div {
   width: 100%;
-  min-height: 200px;
+  max-height: 200px;
   border-radius: 0.5rem;
   position: relative;
   cursor: pointer;
@@ -223,6 +225,7 @@ export default {
 .broadcast-media img {
   width: inherit;
   height: 100%;
+  max-height: 200px;
   object-fit: cover;
   border-radius: inherit;
 }

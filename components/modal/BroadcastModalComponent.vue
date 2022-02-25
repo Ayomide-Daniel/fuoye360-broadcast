@@ -30,15 +30,14 @@
             ></textarea>
           </div>
           <div class="broadcast-func-div">
-            <!-- <form
-              id="broadcast-images-form"
-              @submit.prevent="uploadBroadcastImage($event)"
-            ></form> -->
             <button v-ripple type="button" style="padding: 1rem margin-left:-1rem">
               <i class="bi bi-image" @click="triggerClick"></i>
             </button>
           </div>
-          <div id="preview-div" class="image-preview"></div>
+          <div
+            id="broadcast-image-preview"
+            class="image-preview-div image-preview-div"
+          ></div>
           <div class="input-div tweet-btn-div">
             <button
               v-ripple
@@ -56,7 +55,7 @@
               :disabled="form.body.length <= 0"
               :style="form.body.length <= 0 ? 'opacity:.75;' : ''"
             >
-              <span v-if="loading"
+              <span v-if="btnLoading"
                 ><v-progress-circular
                   indeterminate
                   color="white"
@@ -87,6 +86,7 @@ export default {
           images: null,
         },
       },
+      btnLoading: false,
     };
   },
   computed: {
@@ -102,36 +102,22 @@ export default {
     });
   },
   methods: {
-    async uploadBroadcastImage(image) {
-      const fd = new FormData(document.querySelector("#broadcast-images-form"));
+    async newBroadcast(e) {
+      this.btnLoading = true;
+      const fd = new FormData(e.target);
       try {
-        const res = await Broadcast.uploadImage(fd);
-        if (typeof this.form.media.images !== "object") {
-          return this.form.media.images.push(res.data.data.url);
-        } else {
-          this.form.media.images = [];
-          return this.form.media.images.push(res.data.data.url);
-        }
+        const res = await Broadcast.createBroadcast(fd);
+        this.btnLoading = false;
+        this.$root.$emit("newBroadcast", res.data.data);
+        this.form.body = "";
+        this.showCreateBroadcast = false;
       } catch (error) {
         console.log(error);
+        // this.$root.$emit("alertNotification", { status: err.response.status });
       }
     },
-    newBroadcast(e) {
-      this.loading = true;
-      const fd = new FormData(e.target);
-      Broadcast.createBroadcast(fd)
-        .then((res) => {
-          // this.showCreateBroadcast = false;
-          this.loading = false;
-          this.$root.$emit("appendBroadcast", res.data.data.broadcast);
-          this.form.body = "";
-        })
-        .catch((err) => {
-          this.$root.$emit("alertNotification", { status: err.response.status });
-        });
-    },
     previewImage(e) {
-      $(".image-preview").empty();
+      $(".broadcast-image-preview").empty();
       const files = e.target.files;
       if (files) {
         if (files.length > 2) {
@@ -145,7 +131,7 @@ export default {
               const pic = e.target;
               const image = document.createElement("img");
               $(image).attr("src", pic.result).addClass("preview");
-              $(".image-preview").append(image, null);
+              $(".broadcast-image-preview").append(image, null);
               this.image = pic.result;
             });
             reader.readAsDataURL(file);
@@ -220,18 +206,5 @@ export default {
   font: inherit;
   outline: none;
   padding: 0 0.5rem;
-}
-
-#preview-div {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 0.5rem;
-}
-
-#preview-div img {
-  object-fit: cover;
-  width: 100%;
-  height: auto;
-  margin: 0.5rem;
 }
 </style>

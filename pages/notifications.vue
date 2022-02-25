@@ -9,6 +9,7 @@
 <script>
 export default {
   name: "NotificationsPage",
+  middleware: "authenticated",
 };
 </script>
 

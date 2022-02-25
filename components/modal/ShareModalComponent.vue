@@ -12,11 +12,11 @@
         <form action="" method="post" style="border-radius: 1rem 1rem 0 0">
           <div class="input-div">
             <button
-              v-if="!tweet.bookmarked"
+              v-if="!tweet.meta.has_bookmarked"
               v-ripple
               type="button"
               class="add-to-bookmark"
-              @click="addToBookmarks(tweet.id)"
+              @click="addToBookmarks(tweet._id)"
             >
               <i class="bi bi-bookmark icon"></i> Add to Bookmark
             </button>
@@ -25,9 +25,9 @@
               v-ripple
               type="button"
               class="remove-from-bookmark"
-              @click="removeFromBookmarks(tweet.id)"
+              @click="removeFromBookmarks(tweet._id)"
             >
-              <i class="bi bi-bookamark-x icon"></i> Remove from Bookmark
+              <i class="bi bi-bookmark-x icon"></i> Remove from Bookmark
             </button>
           </div>
           <div class="input-div">
@@ -77,31 +77,36 @@ export default {
         return (this.showShare = false);
       }
     },
-    removeFromBookmarks() {
-      Analytics.removeFromBookmarks({ post_id: this.tweet.id })
-        .then(() => {
-          this.tweet.bookmarked = false;
-          this.$root.$emit("removedFromBookmark", this.tweet.id);
-          this.$root.$emit("alertNotification", {
-            message: "Removed From Bookmarks",
-          });
-        })
-        .catch((err) => {
-          this.$root.$emit("alertNotification", { status: err.response.status });
+    async removeFromBookmarks() {
+      try {
+        const res = await Analytics.removeFromBookmarks({
+          data: { broadcast_id: this.tweet._id },
         });
+
+        this.tweet.meta.has_bookmarked = false;
+        this.$root.$emit("removedFromBookmark", this.tweet._id);
+        this.$root.$emit("alertNotification", {
+          message: "Removed From Bookmarks",
+          res,
+        });
+      } catch (error) {
+        console.log(error);
+        // this.$root.$emit("alertNotification", { status: err.response.status });
+      }
     },
-    addToBookmarks() {
-      Analytics.addToBookmarks({ post_id: this.tweet.id })
-        .then(() => {
-          this.tweet.bookmarked = true;
-          this.$root.$emit("addedFromBookmark", this.tweet.id);
-          this.$root.$emit("alertNotification", {
-            message: "Added To Bookmarks",
-          });
-        })
-        .catch((err) => {
-          this.$root.$emit("alertNotification", { status: err.response.status });
+    async addToBookmarks() {
+      try {
+        const res = await Analytics.addToBookmarks({ broadcast_id: this.tweet._id });
+        this.tweet.meta.has_bookmarked = true;
+        this.$root.$emit("addedFromBookmark", this.tweet._id);
+        this.$root.$emit("alertNotification", {
+          message: "Added To Bookmarks",
+          res,
         });
+      } catch (error) {
+        console.log(error);
+        // this.$root.$emit("alertNotification", { status: err.response.status });
+      }
     },
   },
 };
