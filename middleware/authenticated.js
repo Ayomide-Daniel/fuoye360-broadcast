@@ -10,6 +10,6 @@ export default function ({ route, store, redirect }) {
       sessionStorage.setItem('fuoye360-auth-status', true)
     })
     .then(() => {
-      sessionStorage.setItem('fuoye360-auth-status', true)
+      sessionStorage.setItem('fuoye360-auth-status', false)
     })
 }

@@ -6,6 +6,7 @@
     <CommentModalComponent />
     <ShareModalComponent />
     <OptionModalComponent />
+    <AlertComponent />
   </div>
 </template>
 

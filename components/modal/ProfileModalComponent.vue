@@ -168,7 +168,11 @@ export default {
         const res = await User.updateProfile(fd);
         this.$store.commit("User/setUserData", res.data.data.user);
         this.showProfile = false;
-      } catch (error) {}
+        this.$root.$emit("alert", res.data);
+      } catch (error) {
+        console.log(error);
+        this.$root.$emit("alert", error.response.data);
+      }
       this.btnLoading = false;
     },
     triggerClick(type) {
