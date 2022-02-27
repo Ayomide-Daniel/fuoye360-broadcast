@@ -10,6 +10,9 @@ export default {
   async bookmarks() {
     return await Api.get('/broadcast/bookmarks')
   },
+  async trending() {
+    return await Api.get('/broadcast/trending')
+  },
   async uploadImage(fd) {
     return await Api.post('/broadcast/upload-image', fd, {
       headers: { 'Content-Type': 'multipart/form-data' },

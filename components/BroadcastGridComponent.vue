@@ -100,6 +100,9 @@ export default {
     if (this.$route.name === "username") {
       this.setupUsernamePage();
     }
+    if (this.$route.name === "trending") {
+      this.setupTrendingPage();
+    }
     if (this.$route.name === "bookmarks") {
       this.setupBookmarkPage();
     }
@@ -115,6 +118,19 @@ export default {
     });
   },
   methods: {
+    async setupTrendingPage() {
+      try {
+        const res = await Broadcast.trending();
+        this.broadcasts = res.data.data;
+        if (this.broadcasts.length > 0) {
+          return (this.loading = false);
+        }
+        return false;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async setupBookmarkPage() {
       try {
         const res = await Broadcast.bookmarks();
