@@ -22,15 +22,15 @@
           <div v-if="tweet.user._id !== user._id">
             <div class="input-div">
               <button
-                v-if="tweet.meta.is_following === true"
+                v-if="user.following.includes(tweet.user._id)"
+                v-ripple
                 type="button"
-                class="report-broadcast"
                 @click="unfollowUser"
               >
                 <i class="bi bi-person-x icon"></i> Unfollow
                 <b>{{ tweet.user.full_name }}</b>
               </button>
-              <button v-else type="button" class="report-broadcast" @click="followUser">
+              <button v-else v-ripple type="button" @click="followUser">
                 <i class="bi bi-person-check icon"></i> Follow
                 <b>{{ tweet.user.full_name }}</b>
               </button>
@@ -96,9 +96,10 @@ export default {
         const res = await Analytics.followUser({ user_id: this.tweet.user._id });
         this.tweet.meta.is_following = true;
         this.$store.commit("User/updateUserFollowing", res.data.data.sender);
-        console.log(res);
+        this.$root.$emit("alert", res.data);
       } catch (error) {
-        console.log(error);
+        this.$root.$emit("alert", error.response.data);
+        console.error(error);
       }
     },
     async unfollowUser() {
@@ -108,9 +109,10 @@ export default {
         });
         this.tweet.meta.is_following = false;
         this.$store.commit("User/updateUserFollowing", res.data.data.sender);
-        console.log(res);
+        this.$root.$emit("alert", res.data);
       } catch (error) {
-        console.log(error);
+        this.$root.$emit("alert", error.response.data);
+        console.error(error);
       }
     },
   },

@@ -29,15 +29,12 @@
               required
             ></textarea>
           </div>
+          <div class="broadcast-image-preview image-preview-div"></div>
           <div class="broadcast-func-div">
             <button v-ripple type="button" style="padding: 1rem margin-left:-1rem">
               <i class="bi bi-image" @click="triggerClick"></i>
             </button>
           </div>
-          <div
-            id="broadcast-image-preview"
-            class="image-preview-div image-preview-div"
-          ></div>
           <div class="input-div tweet-btn-div">
             <button
               v-ripple

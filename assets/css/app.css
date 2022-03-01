@@ -114,8 +114,27 @@ input {
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(10px);
     z-index: 2;
+    display: flex;
+    align-items: center;
+}
+.page-meta-div .profile-img{
+    display: flex;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
 }
 
+.profile-img img{
+    border-radius: inherit;
+    -webkit-border-radius: inherit;
+    -moz-border-radius: inherit;
+    -ms-border-radius: inherit;
+    -o-border-radius: inherit;
+}
 .navlinks.nuxt-link-exact-active.nuxt-link-active {
     background: var(--green-bg);
     font-weight: 800;

@@ -24,7 +24,7 @@ export default {
   },
   mounted() {
     this.$root.$on("alert", (alert) => {
-      return this.alerts.unshift(alert);
+      return this.alerts.push(alert);
     });
   },
 };

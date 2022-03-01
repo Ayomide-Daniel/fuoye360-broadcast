@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="page-meta-div">
-      <h3><i class="bi bi-hash icon"></i> Trending</h3>
-    </div>
+    <PageMetaComponent />
     <BroadcastGridComponent />
   </div>
 </template>

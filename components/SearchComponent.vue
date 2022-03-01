@@ -11,6 +11,7 @@
               </div>
             </form>
           </div>
+          <!-- <div class="magic-container"> -->
           <div class="trending-container green-bg">
             <v-container class="container">
               <div class="meta-div">
@@ -52,6 +53,7 @@
               </div>
             </v-container>
           </div>
+          <!-- </div> -->
         </div>
       </v-container>
     </div>
@@ -84,15 +86,14 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 5;
+  z-index: 3;
   width: 100%;
   border-left: 1px solid var(--border-color);
-  overflow-y: auto;
 }
 
 @media screen and (min-width: 768px) {
   #search-component {
-    position: relative;
+    position: relative !important;
   }
   .form-container {
     position: sticky !important;
@@ -127,12 +128,21 @@ export default {
   margin-left: 1rem;
   border-radius: 0 !important;
 }
-.-container {
+/* .-container {
   display: grid;
   align-items: center;
-}
+} */
+
+/* .magic-container {
+  position: sticky;
+  bottom: 0;
+  height: 100vh;
+  overflow-y: hidden;
+} */
+
 .trending-container,
 .suggestion-container {
+  margin-bottom: 1rem;
   min-height: 200px;
   width: 100%;
   border-radius: 1.5rem;
@@ -158,4 +168,9 @@ export default {
 .topic:hover {
   background: var(--green-dark-bg);
 }
+
+/* .suggestion-container {
+  position: sticky;
+  bottom: 0;
+} */
 </style>
