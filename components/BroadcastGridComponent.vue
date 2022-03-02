@@ -1,14 +1,14 @@
 <template>
   <div id="broadcast-component">
     <div v-if="loading">
-      <div class="skeleton-loader">
+      <!-- <div class="skeleton-loader">
         <v-skeleton-loader type="avatar"></v-skeleton-loader>
         <v-skeleton-loader
           min-width="120"
           type="heading, heading, heading"
           class="heading-loading"
         ></v-skeleton-loader>
-      </div>
+      </div> -->
       <div class="skeleton-loader">
         <v-skeleton-loader type="avatar"></v-skeleton-loader>
         <v-skeleton-loader

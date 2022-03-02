@@ -30,7 +30,7 @@
                   size="20"
                 ></v-progress-circular
               ></span>
-              <span v-else> Save</span>
+              <span v-else> SAVE</span>
             </button>
           </div>
         </div>

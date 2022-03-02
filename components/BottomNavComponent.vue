@@ -1,13 +1,12 @@
 <template>
   <div>
-    <PageMetaComponent />
+    <div>BottomNavComponent</div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "NotificationsPage",
-  middleware: "authenticated",
+  name: "BottomNavComponent",
 };
 </script>
 

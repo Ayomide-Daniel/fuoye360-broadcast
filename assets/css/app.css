@@ -17,6 +17,7 @@
     --input-color: #eaedf3;
     --border-color: #d3d3d3;
     --red-color: #ff2323;
+    --red-bg: rgba(255, 35, 35, .25);
     --grey-color: #8899a6;
 }
 
@@ -106,35 +107,6 @@ input {
     -o-border-radius: 1rem !important; */
 }
 
-.page-meta-div {
-    padding: 1rem;
-    position: sticky;
-    top: 0;
-    border-bottom: 1px solid var(--border-color);
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(10px);
-    z-index: 2;
-    display: flex;
-    align-items: center;
-}
-.page-meta-div .profile-img{
-    display: flex;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-}
-
-.profile-img img{
-    border-radius: inherit;
-    -webkit-border-radius: inherit;
-    -moz-border-radius: inherit;
-    -ms-border-radius: inherit;
-    -o-border-radius: inherit;
-}
 .navlinks.nuxt-link-exact-active.nuxt-link-active {
     background: var(--green-bg);
     font-weight: 800;
@@ -214,11 +186,16 @@ input {
   padding: 0.5rem;
 }
 .btn-div button {
+font-weight: 500;
   max-width: 180px;
-  padding: 0.5rem 2rem;
-  border-radius: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.75rem;
   border: 1px solid var(--brand-color);
   text-transform: uppercase;
+  -webkit-border-radius: 0.75rem;
+  -moz-border-radius: 0.75rem;
+  -ms-border-radius: 0.75rem;
+  -o-border-radius: 0.75rem;
 }
 
 .btn-div .default-btn{

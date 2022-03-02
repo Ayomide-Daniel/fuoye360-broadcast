@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="page-meta-div">
-      <h3><i class="bi bi-person icon"></i>Profile</h3>
-    </div>
+    <PageMetaComponent />
     <div style="border-bottom: 1px solid var(--border-color)">
       <div class="img-banner">
         <img :src="user.banner" :alt="`${user.full_name}-profile-banner`" lazy="load" />
@@ -25,7 +23,9 @@
             {{ user.full_name }}
             <span class="verified-patch"><i class="bi bi-patch-check-fill"></i></span>
           </h2>
-          <span>@{{ user.username }}</span>
+          <span
+            ><b>@{{ user.username }}</b></span
+          >
           <p class="profile-bio">
             {{ user.bio }}
           </p>

@@ -65,17 +65,23 @@ export default {
   name: "SearchComponent",
   data() {
     return {
-      // showSearch: true,
+      showSearch: true,
     };
   },
-  computed: {
-    showSearch() {
-      const check = window.matchMedia("only screen and (max-width: 768px)").matches;
-      // if (check) {
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      // this.showSearch = false;
-      // }
-      return !check;
+  computed: {},
+  mounted() {
+    if (window.matchMedia("only screen and (max-width: 425px)").matches) {
+      this.showSearch = false;
+    }
+    window.addEventListener("resize", this.handleResize);
+  },
+  methods: {
+    handleResize() {
+      if (parseInt(window.innerWidth) >= 768) {
+        return (this.showSearch = true);
+      } else {
+        return (this.showSearch = false);
+      }
     },
   },
 };
@@ -89,22 +95,13 @@ export default {
   z-index: 3;
   width: 100%;
   border-left: 1px solid var(--border-color);
-}
-
-@media screen and (min-width: 768px) {
-  #search-component {
-    position: relative !important;
-  }
-  .form-container {
-    position: sticky !important;
-    top: 0 !important;
-  }
+  /* height: 100vh; */
 }
 
 .main-container {
   display: flex;
   z-index: 1;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 1rem;
   background: var(--white-color);
 }
 
@@ -173,4 +170,19 @@ export default {
   position: sticky;
   bottom: 0;
 } */
+
+@media screen and (min-width: 768px) {
+  #search-component {
+    position: relative !important;
+  }
+
+  .main-container {
+    padding: 0.5rem 2rem;
+  }
+
+  .form-container {
+    position: sticky !important;
+    top: 0 !important;
+  }
+}
 </style>

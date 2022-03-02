@@ -48,9 +48,9 @@
             >
               <i class="bi bi-person icon"></i> Profile
             </nuxt-link>
-            <nuxt-link v-ripple="{ class: 'success--text' }" to="/more" class="navlinks">
+            <!-- <nuxt-link v-ripple="{ class: 'success--text' }" to="/more" class="navlinks">
               <i class="bi bi-three-dots icon"></i> More
-            </nuxt-link>
+            </nuxt-link> -->
             <button
               v-ripple="{ class: 'success--text' }"
               to="/more"
@@ -72,44 +72,39 @@ export default {
   name: "NavbarComponent",
   data() {
     return {
-      showNav: false,
+      showNav: true,
     };
   },
   computed: {
-    // showNav() {
-    //   const check = window.matchMedia("only screen and (max-width: 768px)").matches;
-    //   return !check;
-    // get() {
-    // },
-    // set(value) {
-    //   return value;
-    // },
-    // const check = window.matchMedia("only screen and (max-width: 768px)").matches;
-    // if (check) {
-    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-    //   this.showNav = false;
-    // }
-    // return !check;
-    // },
     user() {
       return this.$store.state.User.data;
     },
   },
   watch: {
     $route() {
-      this.showNav = false;
+      if (window.innerWidth < 768) {
+        this.showNav = false;
+      }
     },
   },
   mounted() {
-    // navigator.mediaDevices.enumerateDevices().then((md) => {
-    //   console.log(md);
-    // });
+    if (window.matchMedia("only screen and (max-width: 425px)").matches) {
+      this.showNav = false;
+    }
+
+    window.addEventListener("resize", this.handleResize);
     this.$root.$on("showSideNav", () => {
       this.showNav = true;
-      // console.log(this.showNav);
     });
   },
   methods: {
+    handleResize() {
+      if (parseInt(window.innerWidth) >= 768) {
+        return (this.showNav = true);
+      } else {
+        return (this.showNav = false);
+      }
+    },
     closeNavbar(e) {
       if ($(e.target).closest(".nav-container").length === 0) {
         return (this.showNav = false);
@@ -134,17 +129,6 @@ export default {
   border-right: 1px solid var(--border-color);
 }
 
-@media screen and (min-width: 768px) {
-  #navbar-component {
-    position: relative !important;
-    background: var(--white-color);
-    backdrop-filter: none;
-  }
-  .nav-container {
-    width: 100% !important;
-  }
-}
-
 .nav-container {
   height: 100vh;
   display: flex;
@@ -160,17 +144,12 @@ export default {
   display: grid;
   text-align: left;
   align-items: center;
-  padding-left: 2rem;
+  padding-left: 1.5rem;
   position: relative;
 }
-/* .close-btn {
-  position: absolute;
-  top: -33px;
-  right: -175px;
-  font-size: 2rem;
-} */
 .navlinks,
 .navbtn {
+  font-size: 0.85rem;
   padding: 1rem;
   border-radius: 2rem;
   margin: 0.15rem 0;
@@ -189,5 +168,20 @@ export default {
   background: var(--brand-color);
   color: var(--white-color);
   box-shadow: 0 0 14px 0 var(--green-bg);
+}
+
+@media screen and (min-width: 768px) {
+  #navbar-component {
+    position: relative !important;
+    background: var(--white-color);
+    backdrop-filter: none;
+  }
+  .nav-container {
+    width: 100% !important;
+  }
+
+  .navlinks-container {
+    padding-left: 2rem;
+  }
 }
 </style>

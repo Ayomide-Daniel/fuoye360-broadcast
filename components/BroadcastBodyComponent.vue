@@ -64,16 +64,28 @@
       </div>
       <div class="tweet-profile-div">
         <div class="profile-meta">
-          <nuxt-link to="" style="text-decoration: none; color: var(--primary-color)">
-            <span class="tweet-profilename">{{ d_broadcast.user.full_name }}</span
-            ><span class="tweet-time" style="font-weight: 600"
-              >@{{ d_broadcast.user.username}}</span
-            >
+          <nuxt-link
+            to=""
+            style="text-decoration: none; color: var(--primary-color); display: flex"
+          >
+            <span class="tweet-profilename">{{ d_broadcast.user.full_name }}</span>
+            <div class="tweet-username-div">
+              <span class="tweet-small-meta" style="font-weight: 500"
+                >@{{ d_broadcast.user.username }}</span
+              >
+            </div>
           </nuxt-link>
-          <span class="tweet-time"> . {{ d_broadcast.relative_at }} </span>
+          <div class="tweet-small-meta">
+            <i class="bi bi-dot"> </i>
+          </div>
+          <div class="tweet-time-div">
+            <nuxt-link to="/" class="tweet-small-meta">
+              {{ d_broadcast.relative_at }}
+            </nuxt-link>
+          </div>
         </div>
         <button v-ripple class="tweet-options" type="button" @click="showModal('option')">
-          <i class="bi bi-chevron-down"></i>
+          <i class="bi bi-three-dots"></i>
         </button>
       </div>
       <!-- eslint-disable-next-line vue/no-v-html -->
@@ -144,30 +156,49 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 0;
+  font-size: 0.75rem;
+}
+.profile-meta {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  flex: 11;
+  flex-direction: row;
 }
 
-.tweet-profile-div span {
-  margin-left: 0.25rem;
-  word-break: break-all;
+.tweet-profilename {
+  font-weight: 700;
+  display: flex;
+  flex: none;
 }
 
+.tweet-username-div {
+  margin-left: 0.15rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .tweet-options {
-  width: 35px;
-  height: 35px;
+  margin-left: 1rem;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: none;
   outline: none;
   border: none;
-  position: absolute;
-  right: 0;
-  top: 0;
 }
 
-.tweet-time {
+.tweet-small-meta {
   color: var(--grey-color);
-  font-size: 0.8rem;
 }
-
+.tweet-time-div {
+  margin-left: 0.15rem;
+  display: flex;
+  flex: none;
+}
+.tweet-time-div a {
+  text-decoration: none;
+}
 .tweet-img-div {
   z-index: 1;
   padding: 0.25rem 0;
@@ -181,14 +212,10 @@ export default {
   background-color: var(--bg-color);
 }
 
-.tweet-profilename {
-  font-size: 0.95rem;
-  font-weight: 700;
-}
-
 .tweet-content {
   margin-left: 0.5rem;
   width: 100%;
+  font-size: 0.98rem;
 }
 
 .tweet-body a {
