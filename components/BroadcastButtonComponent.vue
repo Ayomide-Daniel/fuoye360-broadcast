@@ -129,9 +129,8 @@ export default {
 }
 
 button {
-  /* width: 65px;
-  height: 65px; */
-  padding: 1rem;
+  margin: 1rem 0;
+  padding: 0 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -153,7 +152,6 @@ button {
 }
 
 button .icon {
-  /* border: 1px solid black; */
   font-size: 0.9rem;
   width: 35px;
   height: 35px;

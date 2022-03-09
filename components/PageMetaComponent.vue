@@ -71,6 +71,9 @@ export default {
 }
 
 .profile-img img {
+  width: inherit;
+  height: inherit;
+  object-fit: cover;
   border-radius: inherit;
   -webkit-border-radius: inherit;
   -moz-border-radius: inherit;

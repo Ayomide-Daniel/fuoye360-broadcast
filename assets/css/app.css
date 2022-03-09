@@ -8,7 +8,8 @@
     --green-dark-bg: rgba(50, 205, 50, 0.075);
     --orange: #ff9a14;
     --orange-bg: rgba(255, 154, 20, 0.25);
-    --blue: #a2dce7;
+    /* --blue: #a2dce7; */
+    --blue: #1d9bf2;
     --blue-bg: rgba(162, 220, 231, 0.25);
     --pink: #f8ccdc;
     --pink-bg: rgba(248, 204, 220, 0.25);
@@ -16,7 +17,8 @@
     --yellow-bg: rgba(255, 237, 134, 0.25);
     --input-color: #eaedf3;
     --border-color: #d3d3d3;
-    --red-color: #ff2323;
+    /* --red-color: #ff2323; */
+    --red-color: #f91880;
     --red-bg: rgba(255, 35, 35, .25);
     --grey-color: #8899a6;
 }
@@ -179,6 +181,45 @@ input {
     border-radius: 1rem;
     height: fit-content;
 }
+
+.broadcast-modal form {
+  background: var(--input-color);
+  padding: 0.5rem;
+}
+
+.broadcast-modal .share-scroll-down {
+  content: "";
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 5px;
+  display: block;
+  width: 15%;
+  height: 8px;
+  background: var(--input-color);
+  border-radius: 0.5rem;
+  -webkit-border-radius: 0.5rem;
+  -moz-border-radius: 0.5rem;
+  -ms-border-radius: 0.5rem;
+  -o-border-radius: 0.5rem;
+}
+.broadcast-modal h4 {
+  margin: 1rem 0;
+  text-align: center;
+}
+.broadcast-modal .input-div {
+  width: 100%;
+}
+.broadcast-modal button {
+  padding: 0.8rem 0.5rem;
+  font: inherit;
+  width: inherit;
+  text-align: left;
+  background: none;
+  border: none;
+}
+
 .btn-div {
   display: flex;
   column-gap: 0.5rem;

@@ -65,7 +65,7 @@
       <div class="tweet-profile-div">
         <div class="profile-meta">
           <nuxt-link
-            to=""
+            :to="{ name: 'username' }"
             style="text-decoration: none; color: var(--primary-color); display: flex"
           >
             <span class="tweet-profilename">{{ d_broadcast.user.full_name }}</span>

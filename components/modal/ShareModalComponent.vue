@@ -120,43 +120,9 @@ export default {
 .vs-container {
   max-width: 500px;
   height: auto;
+  padding: 0.75rem;
+  padding-top: 1rem;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-}
-.broadcast-modal .share-scroll-down {
-  content: "";
-  position: absolute;
-  margin: auto;
-  left: 0;
-  right: 0;
-  top: 5px;
-  display: block;
-  width: 15%;
-  height: 8px;
-  background: var(--input-color);
-  border-radius: 0.5rem;
-  -webkit-border-radius: 0.5rem;
-  -moz-border-radius: 0.5rem;
-  -ms-border-radius: 0.5rem;
-  -o-border-radius: 0.5rem;
-}
-.broadcast-modal h4 {
-  margin: 1rem 0;
-  text-align: center;
-}
-.broadcast-modal form {
-  background: var(--input-color);
-  padding: 1rem;
-}
-.broadcast-modal .input-div {
-  width: 100%;
-}
-.broadcast-modal button {
-  padding: 0.8rem 0.5rem;
-  font: inherit;
-  width: inherit;
-  text-align: left;
-  background: none;
-  border: none;
 }
 </style>
