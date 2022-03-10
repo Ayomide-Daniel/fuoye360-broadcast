@@ -55,6 +55,7 @@
 </template>
 
 <script>
+/* eslint-disable camelcase */
 import Analytics from "~/assets/js/api/Analytics";
 export default {
   name: "BroadcastButtonComponent",
@@ -64,6 +65,15 @@ export default {
     btn_broadcast() {
       return this.broadcast;
     },
+  },
+  mounted() {
+    this.$root.$on("newBroadcast", ({ broadcast, origin_broadcast }) => {
+      if (origin_broadcast != null) {
+        if (origin_broadcast._id === this.btn_broadcast._id) {
+          this.btn_broadcast.comments = origin_broadcast.comments;
+        }
+      }
+    });
   },
   methods: {
     async unlikeBroadcast() {
@@ -122,7 +132,7 @@ export default {
 .broadcast-func-div {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin-left: 58px;
+  /* margin-left: 58px; */
   justify-content: center;
   margin-top: -0.5rem;
   margin-bottom: -1rem;

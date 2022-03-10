@@ -3,55 +3,62 @@
     <PageMetaComponent />
     <div style="border-bottom: 1px solid var(--border-color)">
       <div class="img-banner">
-        <img :src="user.banner" :alt="`${user.full_name}-profile-banner`" lazy="load" />
+        <img
+          :src="viewed_user.banner"
+          :alt="`${viewed_user.full_name}-profile-banner`"
+          lazy="load"
+        />
       </div>
       <v-container class="profile-meta-div">
         <div class="top-meta-div">
           <div class="profile-img">
             <img
-              :src="user.image"
-              :alt="`${user.full_name}-profile-picture`"
+              :src="viewed_user.image"
+              :alt="`${viewed_user.full_name}-profile-picture`"
               lazy="load"
             />
           </div>
-          <div class="btn-div">
+          <div v-if="viewed_user.id === user.id" class="btn-div">
             <button v-ripple type="button" @click="showEditProfile">Edit Profile</button>
           </div>
         </div>
         <div class="bottom-meta-div">
           <h2>
-            {{ user.full_name }}
+            {{ viewed_user.full_name }}
             <span class="verified-patch"><i class="bi bi-patch-check-fill"></i></span>
           </h2>
           <span
-            ><b>@{{ user.username }}</b></span
+            ><b>@{{ viewed_user.username }}</b></span
           >
           <p class="profile-bio">
-            {{ user.bio }}
+            {{ viewed_user.bio }}
           </p>
           <div class="profile-meta grid-row">
             <div>
               <h3 class="bi bi-geo-alt meta-icon"></h3>
-              <span>{{ user.location }}</span>
+              <span>{{ viewed_user.location }}</span>
             </div>
             <div>
               <h3 class="bi bi-link-45deg meta-icon"></h3>
-              <a :href="user.url" style="color: var(--brand-color)" target="_blank">{{
-                user.url
-              }}</a>
+              <a
+                :href="viewed_user.url"
+                style="color: var(--brand-color)"
+                target="_blank"
+                >{{ viewed_user.url }}</a
+              >
             </div>
             <div>
               <h3 class="bi bi-calendar-event meta-icon"></h3>
-              <span>{{ user.relative_at }}</span>
+              <span>{{ viewed_user.relative_at }}</span>
             </div>
           </div>
           <div class="profile-influence">
             <div>
-              <h3>{{ user.following.length }}</h3>
+              <h3>{{ viewed_user.following ? viewed_user.following.length : 0 }}</h3>
               <span>Following</span>
             </div>
             <div>
-              <h3>{{ user.followers.length }}</h3>
+              <h3>{{ viewed_user.followers ? viewed_user.followers.length : 0 }}</h3>
               <span>Followers</span>
             </div>
           </div>
@@ -63,15 +70,34 @@
 </template>
 
 <script>
+import User from "~/assets/js/api/User";
 export default {
   name: "UserIndexPage",
   middleware: ["authenticated"],
+  data() {
+    return {
+      viewed_user: {},
+    };
+  },
   computed: {
     user() {
       return this.$store.state.User.data;
     },
   },
+  mounted() {
+    if (this.$route.params.username === this.user.username) {
+      this.viewed_user = this.user;
+    }
+    return this.setupUsernamePage();
+  },
   methods: {
+    async setupUsernamePage() {
+      try {
+        const res = await User.findByUsername(this.$route.params.username);
+        this.viewed_user = res.data.data.user;
+        this.$root.$emit("userProfileRetreived", this.viewed_user);
+      } catch (error) {}
+    },
     showEditProfile() {
       return this.$root.$emit("showEditProfile");
     },

@@ -65,7 +65,7 @@ export default {
 <style scoped>
 .notification-content {
   display: grid;
-  grid-template-columns: 20% 80%;
+  grid-template-columns: 10% 90%;
   padding: 0.5rem;
   align-items: flex-start;
   border-bottom: 1px solid #eee;
@@ -82,12 +82,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* justify-self: flex-end; */
 }
 .notification-content .icon {
   font-size: 1.3rem;
-  /* display: flex; */
-  /* margin-right: 1rem; */
   margin: 0 !important;
 }
 

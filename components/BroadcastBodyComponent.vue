@@ -4,8 +4,7 @@
       <nuxt-link
         :to="{
           name: 'username',
-          params: { username: d_broadcast.user.full_name },
-          query: { v: 'broadcast' },
+          params: { username: d_broadcast.user.username },
         }"
         ><img
           loading="lazy"
@@ -13,6 +12,9 @@
           class="tweeter-img"
           :src="d_broadcast.user.image"
       /></nuxt-link>
+      <div v-if="d_broadcast.thread" class="thread-icon-div">
+        <span class="thread-icon"> <i class="bi bi-newspaper"></i></span>
+      </div>
     </div>
     <div class="tweet-content">
       <div v-if="d_broadcast.meta">
@@ -65,7 +67,7 @@
       <div class="tweet-profile-div">
         <div class="profile-meta">
           <nuxt-link
-            :to="{ name: 'username' }"
+            :to="{ name: 'username', params: { username: d_broadcast.user.username } }"
             style="text-decoration: none; color: var(--primary-color); display: flex"
           >
             <span class="tweet-profilename">{{ d_broadcast.user.full_name }}</span>
@@ -104,6 +106,7 @@
           <img loading="lazy" :src="img" :alt="`${index}- broadcast image`" />
         </div>
       </div>
+      <BroadcastButtonComponent :broadcast="d_broadcast" class="tweet-btn-component" />
     </div>
   </div>
 </template>
@@ -179,9 +182,8 @@ export default {
   white-space: nowrap;
 }
 .tweet-options {
-  margin-left: 1rem;
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: none;
   outline: none;
@@ -200,9 +202,14 @@ export default {
   text-decoration: none;
 }
 .tweet-img-div {
-  z-index: 1;
-  padding: 0.25rem 0;
-  background: var(--white-color);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tweet-img-div a {
+  flex: 1;
 }
 .tweeter-img {
   width: 50px;
@@ -276,5 +283,21 @@ export default {
 }
 .broadcast-media .img-div:hover {
   transform: scale(0.9);
+}
+
+.thread-icon-div {
+  flex: 1;
+  display: flex;
+  text-align: center;
+  width: 100%;
+  margin-top: 75%;
+}
+
+.thread-icon {
+  background: var(--input-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  width: 100%;
 }
 </style>

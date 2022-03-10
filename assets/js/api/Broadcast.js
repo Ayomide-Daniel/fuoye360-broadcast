@@ -18,6 +18,9 @@ export default {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
   },
+  async findById(id){
+    return await Api.get(`/broadcast/${id}`)
+  },
 
   async createBroadcast(fd) {
     return await Api.post('/broadcast', fd, {

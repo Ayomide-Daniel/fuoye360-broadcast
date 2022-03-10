@@ -180,14 +180,14 @@ export default {
   padding: 0.5rem 1rem;
   font: inherit;
   margin: 0.5rem 0.25rem 0.5rem 0;
-  border: 1px solid var(--brand-color);
+  /* border: 1px solid var(--brand-color); */
   background: var(--white-color);
   color: var(--brand-color);
-  box-shadow: 0 1px 3px rgb(0 0 0 / 4%);
 }
 .tweet-btn-div .tweet-btn {
   background: var(--brand-color);
   color: var(--white-color);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 4%);
 }
 #tweet-box form {
   background: none;

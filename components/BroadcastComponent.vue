@@ -5,19 +5,12 @@
         class="tweet-content-div"
         :class="origin ? 'for-thread' : ''"
         :style="origin ? 'transform: scale(.85)' : ''"
-        @click="viewStatus(d_broadcast.id, d_broadcast.type, $event)"
+        @click="viewStatus($event)"
       >
         <div v-if="origin" class="thread-border">
           <span class="border-content"></span>
         </div>
         <BroadcastBodyComponent :broadcast="d_broadcast" />
-        <BroadcastButtonComponent :broadcast="d_broadcast" class="tweet-btn-component" />
-        <div
-          v-if="d_broadcast.meta && d_broadcast.meta.is_thread"
-          class="thread-icon-div"
-        >
-          <span class="thread-icon"> <i class="bi bi-newspaper icon"></i> Thread </span>
-        </div>
       </div>
     </v-container>
   </div>
@@ -83,21 +76,17 @@ export default {
     showModal(data, type, modal) {
       this.$root.$emit("showModal", { tweet: data, type, modal });
     },
-    viewStatus(id, type, e) {
+    viewStatus(e) {
       if (
-        $(e.target).closest(".tweet-btn-component").length === 0 &&
+        // $(e.target).closest(".tweet-btn-component").length === 0 &&
         $(e.target).closest(".tweet-content-div a").length === 0 &&
         $(e.target).closest(".tweet-content-div .broadcast-media").length === 0 &&
         $(e.target).closest(".tweet-content-div button").length === 0
       ) {
-        if (this.status !== id) {
-          this.$router.push({
-            name: "status-id",
-            params: { id },
-            query: { t: type },
-          });
-        }
-        this.status = id;
+        this.$router.push({
+          name: "status-id",
+          params: { id: this.d_broadcast._id },
+        });
       }
     },
   },
@@ -126,8 +115,12 @@ export default {
 
 .tweet-div {
   border-bottom: 1px solid #eee;
+  transition: all ease-in-out 100ms;
 }
-
+.tweet-div:hover {
+  cursor: pointer;
+  /* background: var(--green-bg); */
+}
 .thread-icon-div {
   display: flex;
   justify-content: flex-end;

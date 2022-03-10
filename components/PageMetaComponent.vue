@@ -9,24 +9,32 @@
       />
     </div>
     <div v-if="$route.name === 'index'" class="page-title">
-      <h3>Home</h3>
+      <h4>Home</h4>
       <h3 class="bi bi-house"></h3>
     </div>
     <div v-else-if="$route.name === 'trending'" class="page-title">
-      <h3>Trending</h3>
+      <h4>Trending</h4>
       <h3 class="bi bi-hash"></h3>
     </div>
     <div v-else-if="$route.name === 'bookmarks'" class="page-title">
-      <h3>Bookmarks</h3>
+      <h4>Bookmarks</h4>
       <h3 class="bi bi-bookmark"></h3>
     </div>
     <div v-else-if="$route.name === 'username'" class="page-title">
-      <h3>Profile</h3>
+      <h4>Profile</h4>
       <h3 class="bi bi-person"></h3>
     </div>
     <div v-else-if="$route.name === 'notifications'" class="page-title">
-      <h3>Notifications</h3>
+      <h4>Notifications</h4>
       <h3 class="bi bi-bell"></h3>
+    </div>
+    <div v-else-if="$route.name === 'feedback'" class="page-title">
+      <h4>Feedback</h4>
+      <h3 class="bi bi-question-circle"></h3>
+    </div>
+    <div v-else-if="$route.name === 'status-id'" class="page-title">
+      <h4>Broadcast</h4>
+      <h3 class="bi bi-megaphone"></h3>
     </div>
   </div>
 </template>

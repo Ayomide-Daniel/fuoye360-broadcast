@@ -153,8 +153,8 @@ export default {
         // eslint-disable-next-line no-unused-vars
         const res = await Broadcast.createBroadcast(fd);
         this.btnLoading = false;
-        // const broadcast = res.data.data;
-        // this.$root.$emit("newBroadcast", broadcast);
+        const data = res.data.data;
+        this.$root.$emit("newBroadcast", data);
         this.form.body = "";
         this.showComment = false;
       } catch (error) {

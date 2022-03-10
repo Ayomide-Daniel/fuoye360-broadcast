@@ -1,14 +1,6 @@
 <template>
   <div id="broadcast-component">
-    <div v-if="loading">
-      <!-- <div class="skeleton-loader">
-        <v-skeleton-loader type="avatar"></v-skeleton-loader>
-        <v-skeleton-loader
-          min-width="120"
-          type="heading, heading, heading"
-          class="heading-loading"
-        ></v-skeleton-loader>
-      </div> -->
+    <div v-if="broadcastsLoading">
       <div class="skeleton-loader">
         <v-skeleton-loader type="avatar"></v-skeleton-loader>
         <v-skeleton-loader
@@ -72,12 +64,13 @@
 </template>
 
 <script>
+/* eslint-disable camelcase */
 import Broadcast from "~/assets/js/api/Broadcast";
 export default {
   name: "BroadcastGridComponent",
   data() {
     return {
-      loading: true,
+      broadcastsLoading: true,
       broadcasts: [],
     };
   },
@@ -89,16 +82,16 @@ export default {
   watch: {
     broadcasts() {
       if (this.broadcasts.length > 0) {
-        return (this.loading = false);
+        return (this.broadcastsLoading = false);
       }
     },
   },
   mounted() {
+    this.$root.$on("statusPageSetup", (broadcast) => {
+      return this.pushBroadcasts(broadcast);
+    });
     if (this.$route.name === "index") {
       this.setupIndexPage();
-    }
-    if (this.$route.name === "username") {
-      this.setupUsernamePage();
     }
     if (this.$route.name === "trending") {
       this.setupTrendingPage();
@@ -106,24 +99,34 @@ export default {
     if (this.$route.name === "bookmarks") {
       this.setupBookmarkPage();
     }
-    this.$root.$on("newBroadcast", (data) => {
-      this.broadcasts.unshift(data);
+    this.$root.$on("userProfileRetreived", (user) => {
+      this.broadcasts = user.broadcasts;
     });
-    // eslint-disable-next-line camelcase
+
+    this.$root.$on("newBroadcast", ({ broadcast, origin_broadcast }) => {
+      if (origin_broadcast === null) {
+        broadcast.user = this.user;
+        this.broadcasts.unshift(broadcast);
+      }
+    });
+
     this.$root.$on("broacastDeleted", (broadcast_id) => {
       this.broadcasts = this.broadcasts.filter((broadcast) => {
-        // eslint-disable-next-line camelcase
         return broadcast._id !== broadcast_id;
       });
     });
   },
   methods: {
+    pushBroadcasts(broadcast) {
+      this.broadcasts = [...broadcast.comments];
+      return (this.broadcastsLoading = false);
+    },
     async setupTrendingPage() {
       try {
         const res = await Broadcast.trending();
         this.broadcasts = res.data.data;
         if (this.broadcasts.length > 0) {
-          return (this.loading = false);
+          return (this.broadcastsLoading = false);
         }
         return false;
       } catch (error) {
@@ -136,19 +139,7 @@ export default {
         const res = await Broadcast.bookmarks();
         this.broadcasts = res.data.data;
         if (this.broadcasts.length > 0) {
-          return (this.loading = false);
-        }
-        return false;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async setupUsernamePage() {
-      try {
-        const res = await Broadcast.getUserBroadcasts({ user_id: this.user._id });
-        this.broadcasts = res.data.data;
-        if (this.broadcasts.length > 0) {
-          return (this.loading = false);
+          return (this.broadcastsLoading = false);
         }
         return false;
       } catch (error) {
@@ -159,7 +150,7 @@ export default {
       const res = await Broadcast.getBroadcasts();
       this.broadcasts = res.data.data;
       if (this.broadcasts.length > 0) {
-        return (this.loading = false);
+        return (this.broadcastsLoading = false);
       }
       return false;
     },

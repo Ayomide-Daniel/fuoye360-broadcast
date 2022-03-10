@@ -24,6 +24,9 @@ export default {
     })
   },
 
+  findByUsername(username) {
+    return Api.get(`/user/${username}`)
+  },
   sendPasswordResetLink(form) {
     return Api.post('/password/email', form)
   },
